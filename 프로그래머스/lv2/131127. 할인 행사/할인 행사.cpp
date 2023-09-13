@@ -1,7 +1,6 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-
 using namespace std;
 
 int solution(vector<string> want, vector<int> number, vector<string> discount)
