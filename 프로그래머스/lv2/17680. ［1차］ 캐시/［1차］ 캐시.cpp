@@ -20,7 +20,7 @@ public:
             update(it->second);
             return 1;
         }
-        else // 캐시에 없다면, 추가 후 -5 리턴
+        else // 캐시에 없다면, 추가 후 5 리턴
         {
             if (data.size() >= maxSize) // 캐시가 가득 찼을 때는 가장 오래된 데이터 삭제
             {
