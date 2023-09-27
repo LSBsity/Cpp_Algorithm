@@ -4,7 +4,6 @@
 using namespace std;
 
 vector<string> solution(vector<string> p, vector<string> c) {
-    vector<string> answer;
     map<string, int> m;
     
     for (int i = 0; i < p.size(); i++)
