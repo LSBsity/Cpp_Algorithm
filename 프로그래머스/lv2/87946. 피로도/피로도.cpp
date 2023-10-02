@@ -23,6 +23,7 @@ int solution(int k, vector<vector<int>> d) {
                 cnt++;
                 fatigue -= p[i][1];
             }
+            else break;
         }
         answer = max(answer, cnt);
     } while (next_permutation(idx.begin(), idx.end()));
