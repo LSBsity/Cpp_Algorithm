@@ -4,25 +4,24 @@
 using namespace std;
 
 vector<int> solution(vector<string> v) {
-    priority_queue<int> pqMax;
-    priority_queue<int, vector<int>, greater<int>> pqMin;
+    priority_queue<int> max;
+    priority_queue<int, vector<int>, greater<int>> min;
 
     for (int i = 0; i < v.size(); i++) {
         if (v[i][0] == 'I') {
-            pqMax.push(stoi(v[i].substr(2)));
-            pqMin.push(stoi(v[i].substr(2)));
-        } else if ((!pqMax.empty() && !pqMin.empty()) &&
-                   (pqMax.top() == pqMin.top())) {
-            while (!pqMax.empty()) pqMax.pop();
-            while (!pqMin.empty()) pqMin.pop();
-        } else if (v[i].substr(0, 4) == "D -1" && !pqMin.empty()) {
-            pqMin.pop();
-        } else if (v[i].substr(0, 4) == "D 1" && !pqMax.empty()) {
-            pqMax.pop();
+            max.push(stoi(v[i].substr(2)));
+            min.push(stoi(v[i].substr(2)));
+        } else if (!max.empty() && !min.empty() && max.top() == min.top()) {
+            while (!max.empty()) max.pop();
+            while (!min.empty()) min.pop();
+        } else if (v[i].substr(0, 4) == "D -1" && !min.empty()) {
+            min.pop();
+        } else if (v[i].substr(0, 4) == "D 1" && !max.empty()) {
+            max.pop();
         }
     }
 
-    return (pqMin.empty() && pqMax.empty()) || (pqMin.top() == pqMax.top())
+    return min.empty() && max.empty() || min.top() == max.top()
                ? vector<int>(2, 0)
-               : vector<int>{pqMax.top(), pqMin.top()};
+               : vector<int>{max.top(), min.top()};
 }
