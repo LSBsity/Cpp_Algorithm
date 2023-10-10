@@ -6,39 +6,37 @@
 
 using namespace std;
 
-int solution(string begin, string target, vector<string> w) {
+bool v[50];
 
-    unordered_set<string> s(w.begin(), w.end());
-    
-    if (s.find(target) == s.end()) return 0;
+int check(string a, string b) {
+    int count = 0;
+    for (int i = 0; i < a.size(); i++)
+        if (a[i] != b[i]) count++;
+    return count == 1 ? 1 : 0;
+}
 
-    queue<string> q;
-    q.push(begin);
-    int cnt = 0;
+int solution(string begin, string target, vector<string> words) {
+    int answer = 0;
+    queue<pair<string, int>> q;
+    int num;
 
+    q.push(make_pair(begin, 0));
     while (!q.empty()) {
-        int size = q.size();
-        while (size--) {
-            string cur = q.front();
-            q.pop();
+        string tmp = q.front().first;
+        int tmpCnt = q.front().second;
+        q.pop();
 
-            if (cur == target) return cnt;
+        if (tmp == target) return tmpCnt;
 
-            for (int i = 0; i < cur.size(); i++) {
-                char origin = cur[i];
-                for (char c = 'a'; c <= 'z'; c++) {
-                    if (c == origin) continue;
-                    cur[i] = c;
-                    if (s.find(cur) != s.end()) {
-                        q.push(cur);
-                        s.erase(cur);  
-                    }
-                }
-                cur[i] = origin;  
+        for (int i = 0; i < words.size(); i++) {
+            if (v[i]) continue;
+
+            if (check(tmp, words[i])) {
+                v[i] = 1;
+                q.push(make_pair(words[i], tmpCnt + 1));
             }
         }
-        cnt++;
     }
 
-    return 0; 
+    return 0;
 }
