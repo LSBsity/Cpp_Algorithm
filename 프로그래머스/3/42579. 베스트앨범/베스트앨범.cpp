@@ -38,18 +38,11 @@ vector<int> solution(vector<string> g, vector<int> p) {
     for (auto i : v) {
         auto k = m[i.first].second;
         int cnt = 0;
-        vector<Song> check;
         for (auto l : k) {
             ans.push_back(l.num);
-            check.push_back(l);
             cnt++;
             if (cnt > 1) break;
         }
-        if (check.size() > 1 && check[0].plays == check[1].plays &&
-            check[0].num > check[1].num) {
-            swap(ans[ans.size() - 1], ans[ans.size()]);
-        }
-        check.clear();
     }
     return ans;
 }
