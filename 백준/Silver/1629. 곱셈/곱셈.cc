@@ -9,13 +9,13 @@ ll a, b, c;
 ll divide(ll a, ll b, ll c) {
     if (b == 1)
         return a % c;
-    
-    ll tmp = divide(a, b / 2, c) % c;
+
+    ll tmp = divide(a, b / 2, c);
 
     if (b % 2 == 0)
-        return tmp * tmp % c;
+        return (tmp * tmp) % c;
     else
-        return tmp * tmp % c * a % c;
+        return ((tmp * tmp % c) * a) % c;
 
 }
 
