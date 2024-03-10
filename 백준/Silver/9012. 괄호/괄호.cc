@@ -1,41 +1,38 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <stack>
+#include <bits/stdc++.h>
+
 using namespace std;
 
-int main()
-{
-    int n;
-    cin >> n;
+int n;
 
-    for (int i = 0; i < n; i++)
-    {
-        string tmp = "";
-        stack<char> arr;
-        cin >> tmp;
-        string answer = "YES";
-        for (int i = 0; i < tmp.length(); i++)
-        {
-            if (tmp[i] == '(')
-            {
-                arr.push('(');
-            }
-            else if (tmp[i] == ')')
-            {
-                if (!arr.empty())
-                    arr.pop();
-                else if (arr.empty())
-                {
-                    answer = "NO";
-                }
+void check(string str) {
+    stack<char> stk;
+    for (char i: str) {
+        if (i == '(') {
+            stk.push(i);
+        } else if (i == ')') {
+            if (stk.empty() || stk.top() != '(') {
+                cout << "NO" << "\n";
+                return;
+            } else {
+                stk.pop();
             }
         }
-        if (!arr.empty())
-            answer = "NO";
-        cout << answer << '\n';
+    }
+    stk.empty() ? cout << "YES" << "\n" : cout << "NO" << "\n";
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        string str = "";
+        cin >> str;
+
+        check(str);
     }
 
-    return 0;
 }
