@@ -3,10 +3,6 @@
 
 using namespace std;
 
-#include <iostream>
-
-using namespace std;
-
 int getNum(int n)
 {
     int cnt = 0;
