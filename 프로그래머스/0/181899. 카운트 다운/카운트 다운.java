@@ -1,8 +1,9 @@
+import java.util.stream.IntStream;
+
 class Solution {
     public int[] solution(int start_num, int end_num) {
-        int[] ints = new int[start_num - end_num + 1];
-        int idx = 0;
-        for (int i = start_num; i >= end_num; i--)  ints[idx++] = i;
-        return ints;
+        return IntStream.rangeClosed(-start_num, -end_num)
+                .map(i -> -i)
+                .toArray();
     }
 }
