@@ -1,6 +1,6 @@
 # [level 1] 어린 동물 찾기 - 59037 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/59037#fn1) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/59037) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@ Empty
 
 ### 제출 일자
 
-2024년 2월 1일 10:28:36
+2025년 02월 19일 23:49:36
 
 ### 문제 설명
 

@@ -1,5 +1,4 @@
--- 코드를 입력하세요
-SELECT animal_id, name
-from animal_ins
-where intake_condition != 'aged'
-order by animal_id
+select ai.animal_id, ai.name
+from animal_ins ai
+where ai.intake_condition not like 'Aged'
+order by ai.animal_id;
