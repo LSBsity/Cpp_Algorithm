@@ -1,3 +1,3 @@
-select count(distinct name)
-from animal_ins
-where name is not null;
+select count(distinct ai.name) as count
+from animal_ins ai
+where ai.name is not null;
