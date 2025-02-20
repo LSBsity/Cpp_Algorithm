@@ -1,12 +1,4 @@
-SELECT
-    WAREHOUSE_ID,
-    WAREHOUSE_NAME,
-    ADDRESS,
-    IF(FREEZER_YN IS NOT NULL,FREEZER_YN,'N') AS FREEZER_YN
-FROM
-    FOOD_WAREHOUSE
-WHERE 
-    ADDRESS like '%경기도%'
-ORDER BY
-   WAREHOUSE_ID
-  
+select fw.warehouse_id, fw.warehouse_name, fw.address, coalesce(fw.freezer_yn, 'N') as freezer_yn
+from food_warehouse fw
+where fw.address like '경기도%'
+order by fw.warehouse_id;
