@@ -1,5 +1,5 @@
-select animal_id, name
-from animal_ins
-where animal_type = 'Dog'
-  and lower(name) like '%el%'
-order by name asc;
+select ai.animal_id, ai.name
+from animal_ins ai
+where ai.name LIKE '%el%'
+    and ai.animal_type = 'Dog'
+order by ai.name;
