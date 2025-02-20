@@ -1,5 +1,2 @@
--- 코드를 입력하세요
-SELECT price
-from product
-order by price DESC
-limit 1
+select max(p.price) as max_price
+from product p;
