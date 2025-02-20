@@ -1,5 +1,4 @@
--- 코드를 입력하세요
-SELECT DATETIME
-FROM ANIMAL_INS
-ORDER BY DATETIME
-LIMIT 1
+select ai.datetime
+from animal_ins ai
+order by ai.datetime asc
+limit 1;
