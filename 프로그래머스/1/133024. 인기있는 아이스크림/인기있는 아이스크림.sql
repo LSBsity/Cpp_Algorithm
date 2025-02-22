@@ -1,4 +1,3 @@
--- 코드를 입력하세요
-SELECT flavor
-from first_half
-order by total_order DESC, shipment_id ASC
+select fh.flavor
+from first_half fh
+order by fh.total_order desc, fh.shipment_id asc;
