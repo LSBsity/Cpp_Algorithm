@@ -1,13 +1,4 @@
-SELECT
-    PT_NAME,
-    PT_NO,
-    GEND_CD,
-    AGE,
-    IF(TLNO IS NOT NULL, TLNO, 'NONE') AS TLNO
-FROM
-    patient
-WHERE
-    AGE <= 12
-    AND GEND_CD = 'W'
-ORDER BY
-    AGE DESC, PT_NAME ASC;
+select p.pt_name, p.pt_no, p.gend_cd, p.age, coalesce(p.tlno, 'NONE') as tlno
+from patient p
+where p.age <= 12 and p.gend_cd = 'W'
+order by p.age desc, p.pt_name asc;
