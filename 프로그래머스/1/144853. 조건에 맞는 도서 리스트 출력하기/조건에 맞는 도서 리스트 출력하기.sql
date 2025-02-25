@@ -1,9 +1,7 @@
-SELECT
-    BOOK_ID,
-    IF(PUBLISHED_DATE = '0000-00-00', '0000-00-00', DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d')) AS FORMATTED_DATE
-FROM
-    book
-WHERE
-    CATEGORY = '인문' AND YEAR(PUBLISHED_DATE) = 2021
-ORDER BY
-    PUBLISHED_DATE ASC;
+select b.book_id,
+       date_format(b.published_date, '%Y-%m-%d') as published_date
+from book b
+where year(b.published_date) = 2021 and
+      b.category = '인문'
+order by b.published_date asc;
+          
