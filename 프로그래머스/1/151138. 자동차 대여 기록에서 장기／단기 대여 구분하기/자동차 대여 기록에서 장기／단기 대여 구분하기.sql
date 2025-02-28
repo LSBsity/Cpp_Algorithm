@@ -1,8 +1,13 @@
-SELECT HISTORY_ID, CAR_ID, 
-       DATE_FORMAT(START_DATE, '%Y-%m-%d') AS START_DATE,   
-       DATE_FORMAT(END_DATE,'%Y-%m-%d') AS END_DATE,
-       IF( (TIMESTAMPDIFF(DAY, START_DATE, END_DATE) + 1) >= 30, 
-           '장기 대여','단기 대여') AS RENT_TYPE
-FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
-WHERE START_DATE LIKE '2022-09%'
-ORDER BY HISTORY_ID DESC
+select h.history_id,
+       h.car_id,
+       date_format(h.start_date, '%Y-%m-%d') as start_date,
+       date_format(h.end_date, '%Y-%m-%d') as end_date,
+       (case
+            when year(h.start_date) = 2022 and month(h.start_date) = 9 and
+                 datediff(h.end_date, h.start_date) + 1 >= 30
+            then '장기 대여'
+            else '단기 대여'
+       end) as rent_type
+from car_rental_company_rental_history h
+WHERE YEAR(h.start_date) = 2022 AND MONTH(h.start_date) = 9
+order by h.history_id desc;
