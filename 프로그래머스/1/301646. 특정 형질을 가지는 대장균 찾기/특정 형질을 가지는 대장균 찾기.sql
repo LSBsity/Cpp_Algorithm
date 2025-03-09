@@ -1,9 +1,4 @@
-with not_in_two as (
-    select d.genotype
-    from ecoli_data d
-    where not d.genotype >> 1 & 1
-)
-
-select count(*) as count
-from not_in_two w
-where w.genotype & 1 or w.genotype >> 2 & 1
+SELECT COUNT(*) AS COUNT
+FROM ECOLI_DATA
+WHERE (GENOTYPE & 2) = 0  -- 2번 형질이 없음
+AND (GENOTYPE & 1 > 0 OR GENOTYPE & 4 > 0);  -- 1번 또는 3번 형질을 보유
