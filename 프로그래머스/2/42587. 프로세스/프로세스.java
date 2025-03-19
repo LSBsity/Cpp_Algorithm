@@ -10,24 +10,23 @@ class Solution {
             this.value = value;
             this.isTarget = isTarget;
         }
-        
-        
     }
+    
     public int solution(int[] p, int l) {
-        List<Element> list = new ArrayList<>();
+        LinkedList<Element> list = new LinkedList<>();
         
         for (int i = 0; i < p.length; i++) {
-            list.add(new Element(p[i], l == i ? true : false));
+            list.add(new Element(p[i], l == i));
         }
         
         int count = 0;
         while (true) {
-            Element target = list.get(0);
+            Element target = list.getFirst();
             boolean check = true;
             for (int i = 1; i < list.size(); i++) {
                 if (list.get(i).value > target.value) {
-                    list.add(target);
-                    list.remove(0);
+                    list.addLast(target);
+                    list.removeFirst();
                     check = false;
                     break;
                 }
@@ -35,14 +34,11 @@ class Solution {
             
             if (check) {
                 count++;
-                list.remove(0);
+                list.removeFirst();
                 if (target.isTarget) {
                     return count;
                 }
             }
-            
-            
         }
-
     }
 }
