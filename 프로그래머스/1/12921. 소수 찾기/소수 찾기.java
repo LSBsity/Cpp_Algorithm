@@ -1,10 +1,8 @@
 class Solution {
     
     public int eratos(int n) {
-        boolean prime[] = new boolean[n + 1];
-        
-        prime[0] = prime[1] = true;
-        
+        boolean[] prime = new boolean[n + 1];
+
         for (int i = 2; i * i <= n; i++) {
             if (!prime[i]) {
                 for (int j = i * i; j <= n; j += i) {
@@ -12,12 +10,12 @@ class Solution {
                 }
             }
         }
-        
+            
         int count = 0;
-        for (int i = 1; i <= n; i++) {
+        for (int i = 2; i <= n; i++) {
             if (!prime[i]) count++;
         }
-        
+    
         return count;
     }
     
