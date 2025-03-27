@@ -11,10 +11,10 @@ class Solution {
                     break;
                 }
                 temp = temp.replace(word, " ");
-            }
-            
-            if (temp.trim().isEmpty()) { 
-                count++;
+                if (temp.trim().isEmpty()) {
+                    count++;
+                    break;
+                }
             }
         }
         
