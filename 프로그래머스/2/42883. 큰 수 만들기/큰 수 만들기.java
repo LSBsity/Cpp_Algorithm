@@ -6,15 +6,15 @@ class Solution {
         Deque<Integer> stk = new ArrayDeque<>();
         for (int i = 0; i < number.length(); i++) {
             int current = number.charAt(i) - '0';
-            while (!stk.isEmpty() && k > 0 && stk.peekLast() < current) {
-                stk.pollLast();
+            while (!stk.isEmpty() && k > 0 && stk.peek() < current) {
+                stk.pop();
                 k--;
             }
-            stk.addLast(current);
+            stk.push(current);
         }
 
         while (k-- > 0) {
-            stk.pollLast();
+            stk.pop();
         }
 
         StringBuilder sb = new StringBuilder();
@@ -22,6 +22,6 @@ class Solution {
             sb.append(i);
         }
 
-        return sb.toString();
+        return sb.reverse().toString();
     }
 }
