@@ -14,22 +14,17 @@ class Solution {
     }
     
     public int go(int[] arrayA, int[] arrayB) {
-        int gcdA = arrayA[0];
-        int gcdB = arrayB[0];
-
+        int gcd = arrayA[0];
         for (int i = 1; i < arrayA.length; i++) {
-            gcdA = this.gcd(gcdA, arrayA[i]);
+            gcd = this.gcd(gcd, arrayA[i]);
+            if (gcd == 1) return 0;
         }
         
-        boolean check = false;
         for (var i : arrayB) {
-            if (i % gcdA == 0) {
-                check = true;
-                break;
+            if (i % gcd == 0) {
+                return 0;
             } 
         }
-        if (!check) return gcdA;
-        
-        return 0;
+        return gcd;
     }
 }
