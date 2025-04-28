@@ -1,51 +1,49 @@
 class Solution {
-
     public String solution(String new_id) {
         String id = new_id.toLowerCase();
-
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb1 = new StringBuilder();
+        
         for (char ch : id.toCharArray()) {
             if (Character.isAlphabetic(ch) || Character.isDigit(ch) || ch == '-' || ch == '_' || ch == '.') {
-                sb.append(ch);
-            }
+              sb1.append(ch);  
+            } 
         }
-
+        
+        boolean check = false;
         StringBuilder sb2 = new StringBuilder();
-        boolean dot = false;
-        for (char ch : sb.toString().toCharArray()) {
+        for (char ch : sb1.toString().toCharArray()) {
             if (ch == '.') {
-                if (!dot) {
+                if (!check) {
                     sb2.append(ch);
-                    dot = true;
                 }
+                check = true;
             } else {
                 sb2.append(ch);
-                dot = false;
+                check = false;
             }
         }
-
+        
         if (sb2.length() > 0 && sb2.charAt(0) == '.') {
             sb2.deleteCharAt(0);
         }
         if (sb2.length() > 0 && sb2.charAt(sb2.length() - 1) == '.') {
             sb2.deleteCharAt(sb2.length() - 1);
         }
-
         if (sb2.length() == 0) {
             sb2.append('a');
         }
-
+        
         if (sb2.length() >= 16) {
             sb2.setLength(15);
-            if (sb2.charAt(sb2.length() - 1) == '.') {
-                sb2.deleteCharAt(sb2.length() - 1);
+            if (sb2.charAt(14) == '.') {
+                sb2.deleteCharAt(14);
             }
         }
-
+        
         while (sb2.length() < 3) {
             sb2.append(sb2.charAt(sb2.length() - 1));
         }
-
+        
         return sb2.toString();
     }
 }
