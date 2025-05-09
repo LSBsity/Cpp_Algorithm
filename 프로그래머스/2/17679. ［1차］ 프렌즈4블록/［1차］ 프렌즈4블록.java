@@ -6,28 +6,28 @@ class Solution {
         for (int i = 0; i < m; i++) {
             char[] chars = board[i].toCharArray();
             for (int j = 0; j < n; j++) {
-                arr[i][j] = chars[j] - 'A';
+                arr[i][j] = chars[j] - 'A';    
             }
         }
-
+        
         while (true) {
             boolean[][] v = new boolean[m][n];
-            boolean anyErased = false;
-
+            boolean erased = false;
             for (int i = 0; i < m - 1; i++) {
                 for (int j = 0; j < n - 1; j++) {
-                    int curr = arr[i][j];
-                    if (curr == -1) continue;
-                    if (curr == arr[i][j + 1] &&
-                        curr == arr[i + 1][j] &&
-                        curr == arr[i + 1][j + 1]) {
+                    if (arr[i][j] == -1) continue;
+                    if (arr[i][j] == arr[i][j + 1] && 
+                        arr[i][j + 1] == arr[i + 1][j + 1] && 
+                        arr[i + 1][j + 1] == arr[i + 1][j]) {
                         v[i][j] = v[i][j + 1] = v[i + 1][j] = v[i + 1][j + 1] = true;
-                        anyErased = true;
+                        erased = true;
                     }
                 }
             }
-
-            if (!anyErased) break;
+            
+            if (!erased) {
+                break;
+            }
 
             for (int i = 0; i < m; i++) {
                 for (int j = 0; j < n; j++) {
@@ -38,23 +38,23 @@ class Solution {
             }
             
             for (int j = 0; j < n; j++) {
-                int emptyRow = m - 1;
+                int empty = m - 1;
                 for (int i = m - 1; i >= 0; i--) {
                     if (arr[i][j] != -1) {
-                        arr[emptyRow][j] = arr[i][j];
-                        if (emptyRow != i) arr[i][j] = -1;
-                        emptyRow--;
+                        arr[empty][j] = arr[i][j];
+                        if (empty != i) arr[i][j] = -1;
+                        empty--;
                     }
                 }
             }
         }
-
+        
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (arr[i][j] == -1) answer++;
             }
         }
-
+        
         return answer;
     }
 }
