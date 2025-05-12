@@ -1,39 +1,23 @@
-import java.util.*;
-
 class Solution {
+
     public int[] solution(String[] keymap, String[] targets) {
         int[] answer = new int[targets.length];
-
-        List<Map<Character, Integer>> list = new ArrayList<>();
-        for (int i = 0; i < keymap.length; i++) {
-            char[] chars = keymap[i].toCharArray();
-            Map<Character, Integer> map = new HashMap<>();
-            for (int j = 0; j < chars.length; j++) {
-                if (!map.containsKey(chars[j])) map.put(chars[j], j + 1);
-            }
-            list.add(map);
-        }
         
         for (int i = 0; i < targets.length; i++) {
-            char[] chars = targets[i].toCharArray();
-            for (int j = 0; j < targets[i].length(); j++) {
+            int sum = 0;
+            for (var c : targets[i].toCharArray()) {
                 int min = Integer.MAX_VALUE;
-                boolean check = false;
-                for (var m : list) {
-                    if (!m.containsKey(chars[j])) {
-                        continue;
-                    }
-                    check = true;
-                    int value = m.get(chars[j]);
-                    if (value < min) min = value;
+                for (var key : keymap) {
+                    int idx = key.indexOf(c);
+                    if (idx != -1) min = Math.min(min, idx + 1);
                 }
-                if (!check) {
-                    answer[i] = -1;
+                if (min == Integer.MAX_VALUE) {
+                    sum = -1;
                     break;
-                } else {
-                    answer[i] += min;    
                 }
+                sum += min;
             }
+            answer[i] = sum;
         }
         
         return answer;
