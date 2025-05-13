@@ -1,6 +1,6 @@
 class Solution {
     public int[] solution(int[] arr, int k) {
-        int first = Integer.MAX_VALUE, last = 0;
+        int first = 0, last = Integer.MAX_VALUE;
         
         int sum = 0, start = 0;
         for (int end = 0; end < arr.length; end++) {
@@ -10,11 +10,9 @@ class Solution {
                 sum -= arr[start++];
             }
             
-            if (sum == k) {
-                if (Math.abs(first - last) > Math.abs(start - end)) {
-                    first = start;
-                    last = end;
-                }
+            if (sum == k && last - first > end - start) {
+                first = start;
+                last = end;
             }
         }
         
