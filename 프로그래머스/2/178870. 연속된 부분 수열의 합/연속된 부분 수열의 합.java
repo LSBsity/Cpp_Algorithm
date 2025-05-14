@@ -1,16 +1,16 @@
 class Solution {
-    public int[] solution(int[] arr, int k) {
-        int first = 0, last = Integer.MAX_VALUE;
-        
-        int sum = 0, start = 0;
-        for (int end = 0; end < arr.length; end++) {
-            sum += arr[end]; 
+
+    public int[] solution(int[] arr, int target) {
+        int sum = 0, first = 0, last = Integer.MAX_VALUE;
+    
+        for (int start = 0, end = 0; end < arr.length; end++) {
+            sum += arr[end]; // right pointer++
             
-            while (sum > k && start <= end) {
-                sum -= arr[start++];
+            while (sum > target && start <= end) {
+                sum -= arr[start++]; // left pointer++
             }
             
-            if (sum == k && last - first > end - start) {
+            if (sum == target && last - first > end - start) {
                 first = start;
                 last = end;
             }
