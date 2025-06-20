@@ -2,26 +2,29 @@ import java.util.*;
 
 class Solution {
     
+    int[] dist;
+    boolean[] visited;
+    List<Node>[] graph;
+    
     static class Node {
         int v;
-        int cost;
-        
-        public Node(int v, int cost) {
+        int w;
+        public Node(int v, int w) {
             this.v = v;
-            this.cost = cost;
+            this.w = w;
         }
     }
     
     public int solution(int N, int[][] road, int K) {
         int answer = 0;
         
-        List<Node>[] graph = new ArrayList[N + 1];
-        int[] dist = new int[N + 1];
-        boolean[] visited = new boolean[N + 1];
+        dist = new int[N + 1];
+        visited = new boolean[N + 1];
+        graph = new ArrayList[N + 1];
         
         for (int i = 1; i <= N; i++) {
-            graph[i] = new ArrayList<>();
             dist[i] = Integer.MAX_VALUE;
+            graph[i] = new ArrayList<>();
         }
         
         for (int[] node : road) {
@@ -31,18 +34,18 @@ class Solution {
             graph[u].add(new Node(v, w));
             graph[v].add(new Node(u, w));
         }
-        
-        go(graph, dist, visited, 1);
 
+        this.go(1);
+        
         for (int i = 1; i <= N; i++) {
-            if (dist[i] <= K) answer++;            
+            if (dist[i] <= K) answer++;
         }
         
         return answer;
     }
     
-    private int go(List<Node>[] graph, int[] dist, boolean[] visited, int start) {
-        PriorityQueue<Node> q = new PriorityQueue<>((o1, o2) -> o1.cost - o2.cost);
+    private void go(int start) {
+        PriorityQueue<Node> q = new PriorityQueue<>((o1, o2) -> o1.w - o2.w);
         q.add(new Node(start, 0));
         dist[start] = 0;
         
@@ -54,13 +57,12 @@ class Solution {
             }
             
             for (Node next : graph[current.v]) {
-                if (!visited[next.v] && dist[next.v] > current.cost + next.cost) {
-                    dist[next.v] = current.cost + next.cost;
+                if (!visited[next.v] && dist[next.v] > next.w + current.w) {
+                    dist[next.v] = next.w + current.w;
                     q.add(new Node(next.v, dist[next.v]));
                 }
             }
         }
         
-        return -1;
     }
 }
