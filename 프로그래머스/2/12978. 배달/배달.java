@@ -15,54 +15,52 @@ class Solution {
         }
     }
     
-    public int solution(int N, int[][] road, int K) {
+    
+    public int solution(int n, int[][] road, int k) {
         int answer = 0;
         
-        dist = new int[N + 1];
-        visited = new boolean[N + 1];
-        graph = new ArrayList[N + 1];
+        dist = new int[n + 1];
+        visited = new boolean[n + 1];
+        graph = new ArrayList[n + 1];
         
-        for (int i = 1; i <= N; i++) {
+        for (int i = 1; i <= n; i++) {
             dist[i] = Integer.MAX_VALUE;
             graph[i] = new ArrayList<>();
         }
         
-        for (int[] node : road) {
-            int u = node[0];
-            int v = node[1];
-            int w = node[2];
+        for (int[] i : road) {
+            int u = i[0];
+            int v = i[1];
+            int w = i[2];
             graph[u].add(new Node(v, w));
             graph[v].add(new Node(u, w));
         }
-
-        this.go(1);
         
-        for (int i = 1; i <= N; i++) {
-            if (dist[i] <= K) answer++;
+        this.dijkstra(1);
+        
+        for (int i = 1; i <= n; i++) {
+            if (dist[i] <= k) answer++;
         }
         
         return answer;
     }
     
-    private void go(int start) {
-        PriorityQueue<Node> q = new PriorityQueue<>((o1, o2) -> o1.w - o2.w);
-        q.add(new Node(start, 0));
+    private void dijkstra(int start) {
+        PriorityQueue<Node> pq = new PriorityQueue<>((o1, o2) -> o1.w - o2.w);
+        
+        pq.offer(new Node(start, 0));
         dist[start] = 0;
         
-        while (!q.isEmpty()) {
-            Node current = q.poll();
-            
-            if (!visited[current.v]) {
-                visited[current.v] = true;
-            }
+        while (!pq.isEmpty()) {
+            Node current = pq.poll();
+            visited[current.v] = true;
             
             for (Node next : graph[current.v]) {
-                if (!visited[next.v] && dist[next.v] > next.w + current.w) {
-                    dist[next.v] = next.w + current.w;
-                    q.add(new Node(next.v, dist[next.v]));
+                if (!visited[next.v] && dist[next.v] > current.w + next.w) {
+                    dist[next.v] = current.w + next.w;
+                    pq.offer(new Node(next.v, dist[next.v]));
                 }
             }
         }
-        
     }
 }
