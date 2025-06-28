@@ -2,37 +2,38 @@ import java.util.*;
 
 class Solution {
     
-    int timeToMinutes(String time) {
-        String[] parts = time.split(":");
-        return Integer.parseInt(parts[0]) * 60 + Integer.parseInt(parts[1]);
+    private int convert(String time) {
+        String[] splited = time.split(":");
+        return 60 * Integer.valueOf(splited[0]) + Integer.valueOf(splited[1]);
     }
     
-    public int solution(String[][] book_time) {
-        List<int[]> events = new ArrayList<>();
+    
+    public int solution(String[][] times) {
+        List<int[]> list = new ArrayList<>();
         
-        for (String[] booking : book_time) {
-            int checkIn = timeToMinutes(booking[0]);
-            int checkOut = timeToMinutes(booking[1]) + 10; 
+        for (var time : times) {
+            int start = this.convert(time[0]);
+            int end = this.convert(time[1]) + 10;
             
-            events.add(new int[]{checkIn, 1});   
-            events.add(new int[]{checkOut, -1});
+            list.add(new int[]{start, 1});
+            list.add(new int[]{end, -1});
         }
         
-        events.sort((a, b) -> {
+        list.sort((a, b) -> {
             if (a[0] == b[0]) {
-                return a[1] - b[1]; 
+                return a[1] - b[1];
             }
             return a[0] - b[0];
         });
         
         int currentRooms = 0;
-        int maxRooms = 0;
+        int answer = 0;
         
-        for (int[] event : events) {
-            currentRooms += event[1];
-            maxRooms = Math.max(maxRooms, currentRooms);
+        for (var i : list) {
+            currentRooms += i[1];
+            answer = Math.max(currentRooms, answer);
         }
         
-        return maxRooms;
+        return answer;
     }
 }
