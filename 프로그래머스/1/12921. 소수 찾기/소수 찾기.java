@@ -1,9 +1,8 @@
 import java.util.*;
 
 class Solution {
-    
-    private int eratos(int n) {
-        int count = 0;
+    public int solution(int n) {
+        int answer = 0;
         boolean[] isPrime = new boolean[n + 1];
         
         for (int i = 2; i * i <= n; i++) {
@@ -15,13 +14,9 @@ class Solution {
         }
         
         for (int i = 2; i <= n; i++) {
-            if (!isPrime[i]) count++;
+            if (!isPrime[i]) answer++;
         }
         
-        return count;
-    }
-    
-    public int solution(int n) {
-        return this.eratos(n);
+        return answer;
     }
 }
