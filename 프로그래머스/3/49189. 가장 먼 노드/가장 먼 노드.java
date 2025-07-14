@@ -8,8 +8,8 @@ class Solution {
         }
         
         for (int[] edge : edges) {
-            nodes.get(edge[0]).add(edge[1]);
             nodes.get(edge[1]).add(edge[0]);
+            nodes.get(edge[0]).add(edge[1]);
         }
         
         Queue<Integer> q = new LinkedList<>();
