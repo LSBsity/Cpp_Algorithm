@@ -7,71 +7,78 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-    static int[] dz = {0, 0, 0, 0, -1, 1};
+    static int answer = -1;
+    static int M, N, H;
+
+    static Queue<int[]> q = new LinkedList<>();
+    static boolean[][][] visited;
+
+    static int[] dz = {0, 0, 0, 0, 1, -1};
     static int[] dx = {-1, 0, 1, 0, 0, 0};
     static int[] dy = {0, 1, 0, -1, 0, 0};
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int M = Integer.parseInt(st.nextToken());
-        int N = Integer.parseInt(st.nextToken());
-        int H = Integer.parseInt(st.nextToken());
-        int[][][] map = new int[H][N][M];
-
-        for (int k = 0; k < H; k++) {
-            for (int i = 0; i < N; i++) {
-                st = new StringTokenizer(br.readLine());
-                for (int j = 0; j < M; j++) {
-                    map[k][i][j] = Integer.parseInt(st.nextToken());
-                }
-            }
-        }
-        System.out.println(solve(map, M, N, H));
-    }
-
-    private static int solve(int[][][] map, int M, int N, int H) {
-        Queue<int[]> q = new LinkedList<>();
-        boolean[][][] v = new boolean[H][N][M];
-
-        for (int k = 0; k < H; k++) {
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < M; j++) {
-                    if (map[k][i][j] == 1) {
-                        q.offer(new int[]{k, i, j});
-                        v[k][i][j] = true;
-                    }
-                }
-            }
-        }
-
-
-        while (!q.isEmpty()) {
-            int[] cur = q.poll();
+    private static void go(int[][][] arr) {
+        while(!q.isEmpty()) {
+            int[] current = q.poll();
+            visited[current[0]][current[1]][current[2]] = true;
 
             for (int i = 0; i < 6; i++) {
-                int nz = cur[0] + dz[i];
-                int nx = cur[1] + dx[i];
-                int ny = cur[2] + dy[i];
-                if (nz >= 0 && nz < H && nx >= 0 && nx < N && ny >= 0 && ny < M && map[nz][nx][ny] != -1 && !v[nz][nx][ny]) {
-                    q.offer(new int[]{nz, nx, ny});
-                    map[nz][nx][ny] = map[cur[0]][cur[1]][cur[2]] + 1;
-                    v[nz][nx][ny] = true;
+                int nz = current[0] + dz[i];
+                int nx = current[1] + dx[i];
+                int ny = current[2] + dy[i];
+
+                if (nz < 0 || nx < 0 || ny < 0 || nz >= H || nx >= N || ny >= M || arr[nz][nx][ny] != 0 || visited[nz][nx][ny]) continue;
+
+                q.offer(new int[]{nz, nx, ny, current[3] + 1});
+                arr[nz][nx][ny] = current[3] + 1;
+                answer = Math.max(answer, arr[nz][nx][ny]);
+            }
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        M = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        H = Integer.parseInt(st.nextToken());
+
+        int[][][] arr = new int[H][N][M];
+        visited = new boolean[H][N][M];
+        boolean check = false;
+
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < N; j++) {
+                st = new StringTokenizer(br.readLine());
+                for (int k = 0; k < M; k++) {
+                    arr[i][j][k] = Integer.parseInt(st.nextToken());
+                    if (arr[i][j][k] == 1) {
+                        q.offer(new int[]{i, j, k, 0});
+                    }
+                    if (arr[i][j][k] == 0) check = true;
                 }
             }
         }
-        int day = Integer.MIN_VALUE;
-        for (int k = 0; k < H; k++) {
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < M; j++) {
-                    day = Math.max(map[k][i][j], day);
-                    if (map[k][i][j] == 0) {
-                        return -1;
+        if (!check) {
+            System.out.println("0");
+            return;
+        }
+
+        go(arr);
+
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < N; j++) {
+                for (int k = 0; k < M; k++) {
+                    if (arr[i][j][k] == 0) {
+                        System.out.println("-1");
+                        return;
                     }
                 }
             }
         }
-        return day - 1;
+
+        System.out.println(answer);
     }
 }
