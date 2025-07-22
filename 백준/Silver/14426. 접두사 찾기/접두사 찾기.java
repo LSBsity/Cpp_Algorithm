@@ -1,11 +1,13 @@
-import java.io.*;
-import java.util.*;
-import java.util.stream.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class Main {
 
-    static TrieNode root;
-    static StringBuilder sb = new StringBuilder();
+    static Trie root;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -14,7 +16,7 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        root = new TrieNode();
+        root = new Trie();
 
         for (int i = 0; i < N; i++) {
             String word = br.readLine();
@@ -24,42 +26,38 @@ public class Main {
         int answer = 0;
         for (int i = 0; i < M; i++) {
             String query = br.readLine();
-            if (search(query)) {
-                answer++;
-            }
+            if (search(query)) answer++;
         }
 
         System.out.println(answer);
     }
 
     private static void insert(String word) {
-        TrieNode currentNode = root;
+        Trie temp = root;
         for (char c : word.toCharArray()) {
-            currentNode.children.putIfAbsent(c, new TrieNode());
-            currentNode = currentNode.children.get(c);
+            temp.child.putIfAbsent(c, new Trie());
+            temp = temp.child.get(c);
         }
-        currentNode.isEndOfWord = true;
+        temp.isEndOfWord = true;
     }
 
-    private static boolean search(String prefix) {
-        TrieNode currentNode = root;
-        for (char c : prefix.toCharArray()) {
-            if (!currentNode.children.containsKey(c)) {
-                return false;
-            }
-            currentNode = currentNode.children.get(c);
+    private static boolean search(String query) {
+        Trie temp = root;
+        for (char c : query.toCharArray()) {
+            if (!temp.child.containsKey(c)) return false;
+            temp = temp.child.get(c);
         }
+
         return true;
     }
-
 }
 
-class TrieNode {
-    Map<Character, TrieNode> children;
+class Trie {
+    Map<Character, Trie> child;
     boolean isEndOfWord;
 
-    TrieNode() {
-        this.children = new HashMap<>();
-        isEndOfWord = false;
+    public Trie() {
+        this.child = new HashMap<>();
+        this.isEndOfWord = false;
     }
 }
