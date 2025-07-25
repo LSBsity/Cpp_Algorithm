@@ -56,6 +56,7 @@ class Solution {
             visited[current.v] = true;
             
             for (Node next : graph[current.v]) {
+                System.out.println(Arrays.toString(dist));
                 if (!visited[next.v] && dist[next.v] > current.w + next.w) {
                     dist[next.v] = current.w + next.w;
                     pq.offer(new Node(next.v, dist[next.v]));
