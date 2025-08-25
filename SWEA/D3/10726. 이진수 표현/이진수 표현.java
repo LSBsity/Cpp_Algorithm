@@ -21,8 +21,8 @@ public class Solution {
             int N = Integer.parseInt(st.nextToken());
             int M = Integer.parseInt(st.nextToken());
 
-            solve1(t, N, M);
-            // solve2(t, N, M);
+            // solve1(t, N, M);
+            solve2(t, N, M);
         }
 
         System.out.println(sb);
