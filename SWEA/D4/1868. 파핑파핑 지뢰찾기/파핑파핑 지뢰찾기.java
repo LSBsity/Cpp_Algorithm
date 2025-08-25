@@ -5,9 +5,10 @@ public class Solution {
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st = null;
-    static StringBuilder sb = new StringBuilder();
 
+    static StringBuilder sb = new StringBuilder();
     static int T, N;
+
     static char[][] board;
     static int[][] map;
     static boolean[][] visited;
@@ -31,74 +32,75 @@ public class Solution {
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
                     if (board[i][j] == '*') {
-                        map[i][j] = -1; 
+                        map[i][j] = -1;
                     } else {
-                        map[i][j] = count(i, j);
+                        map[i][j] = countMine(i, j);
                     }
                 }
             }
 
-            int answer = 0;
+            int count = 0;
 
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
                     if (!visited[i][j] && map[i][j] == 0) {
                         bfs(i, j);
-                        answer++;
+                        count++;
                     }
                 }
             }
 
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
-                    if (!visited[i][j] && map[i][j] > 0) {
-                        answer++;
-                    }
+                    if (!visited[i][j] && map[i][j] > 0) count++;
                 }
             }
-            
-            sb.append(String.format("#%d %d", t, answer))
+
+            sb.append(String.format("#%d %d", t, count))
                     .append('\n');
         }
 
         System.out.println(sb);
     }
 
-    static int count(int x, int y) {
-        int cnt = 0;
-        for (int d = 0; d < 8; d++) {
-            int nx = x + dx[d];
-            int ny = y + dy[d];
-
-            if (nx < 0 || ny < 0 || nx >= N || ny >= N)
-                continue;
-
-            if (board[nx][ny] == '*')
-                cnt++;
-        }
-        return cnt;
-    }
-
-    static void bfs(int x, int y) {
+    public static void bfs(int x, int y) {
         Queue<int[]> q = new LinkedList<>();
         q.offer(new int[] { x, y });
         visited[x][y] = true;
 
         while (!q.isEmpty()) {
-            int[] cur = q.poll();
+            int[] current = q.poll();
+            int cx = current[0];
+            int cy = current[1];
 
-            if (map[cur[0]][cur[1]] == 0) {
-                for (int d = 0; d < 8; d++) {
-                    int nx = cur[0] + dx[d];
-                    int ny = cur[1] + dy[d];
 
-                    if (nx < 0 || ny < 0 || nx >= N || ny >= N || visited[nx][ny] || map[nx][ny] == -1)
-                        continue;
+            if (map[cx][cy] == 0) {
+                for (int i = 0; i < 8; i++) {
+                    int nx = cx + dx[i];
+                    int ny = cy + dy[i];
 
-                    visited[nx][ny] = true;
+                    if (nx < 0 || ny < 0 || nx >= N || ny >= N || visited[nx][ny] || map[nx][ny] == -1) continue;
+                    
                     q.offer(new int[] { nx, ny });
+                    visited[nx][ny] = true;
                 }
             }
         }
     }
+
+    public static int countMine(int x, int y) {
+        int count = 0;
+
+        for (int i = 0; i < 8; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if (nx < 0 || ny < 0 || nx >= N || ny >= N) continue;
+
+            if (board[nx][ny] == '*') count++;
+        }
+
+        return count;
+    }
+    
 }
