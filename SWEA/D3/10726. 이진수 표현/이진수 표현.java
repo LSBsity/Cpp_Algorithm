@@ -21,18 +21,35 @@ public class Solution {
             int N = Integer.parseInt(st.nextToken());
             int M = Integer.parseInt(st.nextToken());
 
-            int temp = M;
-
-            for (int i = 0; i < N; i++) {
-                int bit = 1 << i;
-
-                temp |= bit;
-            }
-
-            sb.append(String.format("#%d %s", t, temp == M ? "ON" : "OFF"))
-                    .append('\n');
+            solve1(t, N, M);
+            // solve2(t, N, M);
         }
 
         System.out.println(sb);
     }
+
+    private static void solve1(int t, int N, int M) {
+        int temp = M;
+
+        for (int i = 0; i < N; i++) {
+            int bit = 1 << i;
+
+            temp |= bit;
+        }
+
+        sb.append(String.format("#%d %s", t, temp == M ? "ON" : "OFF"))
+                .append('\n');
+    }
+
+    private static void solve2(int t, int N, int M) {
+        int lastBit = (1 << N) - 1;
+        
+        if (lastBit == (M & lastBit)) {
+            sb.append(String.format("#%d %s", t, "ON"));
+        } else {
+            sb.append(String.format("#%d %s", t, "OFF"));
+        }
+        sb.append('\n');
+    }
+
 }
