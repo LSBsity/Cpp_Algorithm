@@ -11,86 +11,88 @@ public class Solution {
     static int T;
     static int V, E;
 
-    static Edge[] edges;
-    static int[] parents;
+    static List<Node>[] adjList;
+    static boolean[] visited;
 
     public static void main(String[] args) throws Exception {
         T = Integer.parseInt(br.readLine());
 
         for (int t = 1; t <= T; t++) {
-            String[] line = br.readLine().split(" ");
-            V = Integer.parseInt(line[0]);
-            E = Integer.parseInt(line[1]);
+            st = new StringTokenizer(br.readLine());
 
-            edges = new Edge[E];
-            parents = new int[V + 1];
+            V = Integer.parseInt(st.nextToken());
+            E = Integer.parseInt(st.nextToken());
+
+            visited = new boolean[V + 1];
+            adjList = new ArrayList[V + 1];
+            for (int i = 0; i < V + 1; i++) {
+                adjList[i] = new ArrayList<>();
+            }
 
             for (int i = 0; i < E; i++) {
-                line = br.readLine().split(" ");
-                edges[i] = new Edge(Integer.parseInt(line[0]), Integer.parseInt(line[1]), Integer.parseInt(line[2]));
+                st = new StringTokenizer(br.readLine());
+
+                int from = Integer.parseInt(st.nextToken());
+                int to = Integer.parseInt(st.nextToken());
+                int weight = Integer.parseInt(st.nextToken());
+
+                adjList[from].add(new Node(to, weight));
+                adjList[to].add(new Node(from, weight));
             }
 
-            make();
-            Arrays.sort(edges);
-
-            long sum = 0;
-            int cnt = 0;
-            for (Edge edge : edges) {
-                if (!union(edge.from, edge.to))
-                    continue;
-
-                sum += edge.weight;
-                if (++cnt == V - 1)
-                    break;
-            }
+            long result = go(1);
 
             sb.append('#')
                     .append(t)
                     .append(' ')
-                    .append(sum)
+                    .append(result)
                     .append('\n');
         }
 
         System.out.println(sb);
     }
 
-    public static void make() {
-        for (int i = 0; i < V; i++) {
-            parents[i] = i;
+    public static long go(int start) {
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+
+        pq.offer(new Node(start, 0));
+
+        long sum = 0;
+        int count = 0;
+        while (!pq.isEmpty()) {
+            Node current = pq.poll();
+
+            if (visited[current.vertex])
+                continue;
+
+            visited[current.vertex] = true;
+            sum += current.weight;
+            count++;
+
+            if (count == V)
+                break;
+
+            for (Node next : adjList[current.vertex]) {
+                if (!visited[next.vertex]) {
+                    pq.offer(next);
+                }
+            }
         }
+
+        return sum;
     }
 
-    public static int find(int a) {
-        if (parents[a] == a)
-            return a;
-        return parents[a] = find(parents[a]);
-    }
-
-    public static boolean union(int a, int b) {
-        int aRoot = find(a);
-        int bRoot = find(b);
-
-        if (aRoot == bRoot)
-            return false;
-
-        parents[bRoot] = aRoot;
-        return true;
-    }
-
-    static class Edge implements Comparable<Edge> {
-
-        int from;
-        int to;
+    static class Node implements Comparable<Node> {
+        int vertex;
         int weight;
 
-        public Edge(int from, int to, int weight) {
-            this.from = from;
-            this.to = to;
+        public Node(int vertex, int weight) {
+            this.vertex = vertex;
             this.weight = weight;
         }
 
         @Override
-        public int compareTo(Edge o) {
+        public int compareTo(Node o) {
             return Integer.compare(this.weight, o.weight);
         }
     }
