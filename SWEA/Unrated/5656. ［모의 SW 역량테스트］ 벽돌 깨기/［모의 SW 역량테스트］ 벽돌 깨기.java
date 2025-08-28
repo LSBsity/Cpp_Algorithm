@@ -3,29 +3,37 @@ import java.util.*;
 
 public class Solution {
 
-    static int N, W, H;
-    static int answer;
-    static final int[] dx = { -1, 1, 0, 0 };
-    static final int[] dy = { 0, 0, -1, 1 };
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringTokenizer st = null;
+
+    static StringBuilder sb = new StringBuilder();
+
+    static int T, N, W, H;
+    static int total, answer;
+
+    static int[][] map;
+
+    static int[] dx = { -1, 0, 1, 0 };
+    static int[] dy = { 0, 1, 0, -1 };
 
     public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-        int T = Integer.parseInt(br.readLine().trim());
+        T = Integer.parseInt(br.readLine());
 
-        for (int tc = 1; tc <= T; tc++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int t = 1; t <= T; t++) {
+            st = new StringTokenizer(br.readLine());
+
             N = Integer.parseInt(st.nextToken());
             W = Integer.parseInt(st.nextToken());
             H = Integer.parseInt(st.nextToken());
 
-            int[][] map = new int[H][W];
-            int total = 0;
-            for (int r = 0; r < H; r++) {
+            map = new int[H][W];
+            total = 0;
+
+            for (int i = 0; i < H; i++) {
                 st = new StringTokenizer(br.readLine());
-                for (int c = 0; c < W; c++) {
-                    map[r][c] = Integer.parseInt(st.nextToken());
-                    if (map[r][c] > 0)
+                for (int j = 0; j < W; j++) {
+                    map[i][j] = Integer.parseInt(st.nextToken());
+                    if (map[i][j] > 0)
                         total++;
                 }
             }
@@ -33,96 +41,110 @@ public class Solution {
             answer = total;
             dfs(0, map, total);
 
-            sb.append("#").append(tc).append(" ").append(answer).append("\n");
+            sb.append('#')
+                    .append(t)
+                    .append(' ')
+                    .append(answer)
+                    .append('\n');
         }
-        System.out.print(sb.toString());
+
+        System.out.println(sb);
     }
 
-    static void dfs(int depth, int[][] map, int remain) {
-        if (remain == 0) { // 다 깬 경우
+    public static void dfs(int depth, int[][] map, int remain) {
+        if (remain == 0) {
             answer = 0;
             return;
         }
-        if (depth == N) { // 구슬 다 쓴 경우
+        if (depth == N) {
             answer = Math.min(answer, remain);
             return;
         }
-        if (answer == 0)
-            return; // 최선이면 종료
+        if (answer == 0) {
+            return;
+        }
 
         for (int c = 0; c < W; c++) {
-            int r = findFirstBrick(map, c);
+            int r = findFirst(map, c);
             if (r == -1) {
-                // 빈 열에 쏘는 경우: 변화는 없지만 구슬은 소비됨
                 dfs(depth + 1, map, remain);
             } else {
-                int[][] next = copy(map);
-                int broken = boom(next, r, c);
-                fall(next);
-                dfs(depth + 1, next, remain - broken);
+                int[][] newMap = copyMap(map);
+                int explosed = explose(r, c, newMap);
+                drop(newMap);
+                dfs(depth + 1, newMap, remain - explosed);
             }
+
             if (answer == 0)
-                return;
+                break;
         }
     }
 
-    static int findFirstBrick(int[][] map, int c) {
-        for (int r = 0; r < H; r++)
-            if (map[r][c] != 0)
-                return r;
-        return -1;
-    }
-
-    static int[][] copy(int[][] src) {
-        int[][] dst = new int[H][W];
-        for (int i = 0; i < H; i++)
-            System.arraycopy(src[i], 0, dst[i], 0, W);
-        return dst;
-    }
-
-    static int boom(int[][] map, int x, int y) {
-        int broken = 0;
-        Queue<int[]> q = new ArrayDeque<>();
-        if (map[x][y] > 1) {
-            q.offer(new int[] { x, y, map[x][y] });
+    public static void drop(int[][] newMap) {
+        for (int c = 0; c < W; c++) {
+            int pos = H - 1;
+            for (int r = H - 1; r >= 0; r--) {
+                if (newMap[r][c] != 0) {
+                    int temp = newMap[r][c];
+                    newMap[r][c] = 0;
+                    newMap[pos--][c] = temp;
+                }
+            }
         }
-        map[x][y] = 0;
-        broken++;
+    }
+
+    public static int explose(int x, int y, int[][] newMap) {
+        int explosed = 0;
+        Queue<int[]> q = new LinkedList<>();
+
+        if (newMap[x][y] >= 1) {
+            q.offer(new int[] { x, y, newMap[x][y] });
+        }
+
+        newMap[x][y] = 0;
+        explosed++;
 
         while (!q.isEmpty()) {
-            int[] cur = q.poll();
-            int r = cur[0], c = cur[1], power = cur[2];
+            int[] current = q.poll();
+            int r = current[0], c = current[1], power = current[2];
             for (int i = 0; i < 4; i++) {
-                int nx = r, ny = c;
+                int nx = r;
+                int ny = c;
                 for (int j = 1; j < power; j++) {
                     nx += dx[i];
                     ny += dy[i];
-                    if (nx < 0 || nx >= H || ny < 0 || ny >= W)
-                        break;
-                    if (map[nx][ny] == 0)
-                        continue;
-                    if (map[nx][ny] > 1)
-                        q.offer(new int[] { nx, ny, map[nx][ny] });
 
-                    map[nx][ny] = 0;
-                    broken++;
+                    if (nx < 0 || ny < 0 || nx >= H || ny >= W)
+                        break;
+                    if (newMap[nx][ny] == 0)
+                        continue;
+                    if (newMap[nx][ny] > 1)
+                        q.offer(new int[] { nx, ny, newMap[nx][ny] });
+
+                    newMap[nx][ny] = 0;
+                    explosed++;
                 }
             }
         }
 
-        return broken;
+        return explosed;
     }
 
-    static void fall(int[][] map) {
-        for (int c = 0; c < W; c++) {
-            int write = H - 1;
-            for (int r = H - 1; r >= 0; r--) {
-                if (map[r][c] != 0) {
-                    int val = map[r][c];
-                    map[r][c] = 0;
-                    map[write--][c] = val;
-                }
-            }
+    public static int findFirst(int[][] map, int c) {
+        for (int r = 0; r < H; r++) {
+            if (map[r][c] > 0)
+                return r;
         }
+        return -1;
+    }
+
+    public static int[][] copyMap(int[][] srcMap) {
+        int[][] newMap = new int[H][W];
+
+        for (int i = 0; i < H; i++) {
+            System.arraycopy(srcMap[i], 0, newMap[i], 0, W);
+        }
+
+        return newMap;
     }
 }
