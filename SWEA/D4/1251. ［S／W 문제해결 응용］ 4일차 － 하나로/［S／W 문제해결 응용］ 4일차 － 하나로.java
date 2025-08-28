@@ -1,122 +1,123 @@
 import java.io.*;
 import java.util.*;
 
+// using prim algorithm
 public class Solution {
+
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st = null;
 
     static StringBuilder sb = new StringBuilder();
 
-    static int T;
-    static int N;
+    static int T, N;
+
+    static int[] dx;
+    static int[] dy;
+
     static double tax;
 
-    static int[] dx, dy;
-
-    static Edge[] edges;
-    static int[] parents;
+    static List<Node>[] adjList;
+    static boolean[] visited;
 
     public static void main(String[] args) throws Exception {
         T = Integer.parseInt(br.readLine());
 
         for (int t = 1; t <= T; t++) {
-            N = Integer.parseInt(br.readLine());
-
-            dx = new int[N];
-            dy = new int[N];
-
-            edges = new Edge[N - 1];
-            parents = new int[N];
-
-            st = new StringTokenizer(br.readLine());
-            for (int i = 0; i < N; i++) {
-                dx[i] = Integer.parseInt(st.nextToken());
-            }
-
-            st = new StringTokenizer(br.readLine());
-            for (int i = 0; i < N; i++) {
-                dy[i] = Integer.parseInt(st.nextToken());
-            }
-
-            tax = Double.parseDouble(br.readLine());
-
-            edges = buildEdges();
-            Arrays.sort(edges);
-            make();
-
-            long result = 0;
-            int cnt = 0;
-            for (Edge edge : edges) {
-                if (!union(edge.from, edge.to)) continue;
-
-                result += edge.weight;
-                if (++cnt == N - 1) break; 
-            }
+            init();
+            long result = go();
 
             sb.append('#')
-            .append(t)
-            .append(' ')
-            .append(Math.round(result * tax))
-            .append('\n');
+                    .append(t)
+                    .append(' ')
+                    .append(Math.round(tax * result))
+                    .append('\n');
         }
 
         System.out.println(sb);
     }
 
-    public static void make() {
-        for (int i = 0; i < N; i++) {
-            parents[i] = i;
-        }
-    }
+    public static long go() {
+        PriorityQueue<Node> pq = new PriorityQueue<>();
 
-    public static int find(int a) {
-        if (a == parents[a])
-            return a;
-        return parents[a] = find(parents[a]);
-    }
+        pq.offer(new Node(1, 0));
 
-    public static boolean union(int a, int b) {
-        int aRoot = find(a);
-        int bRoot = find(b);
+        long sum = 0;
+        int count = 0;
 
-        if (aRoot == bRoot)
-            return false;
+        while (!pq.isEmpty()) {
+            Node current = pq.poll();
 
-        parents[bRoot] = aRoot;
+            if (visited[current.vertex])
+                continue;
 
-        return true;
-    }
+            visited[current.vertex] = true;
+            sum += current.weight;
+            count++;
 
-    public static Edge[] buildEdges() {
-        int n = dx.length;
-        List<Edge> list = new ArrayList<>(n * (n - 1) / 2);
+            if (count == N)
+                break;
 
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                long nx = dx[i] - (long) dx[j];
-                long ny = dy[i] - (long) dy[j];
-
-                long w = nx * nx + ny * ny;
-                list.add(new Edge(i, j, w));
+            for (Node next : adjList[current.vertex]) {
+                if (!visited[next.vertex]) {
+                    pq.offer(next);
+                }
             }
         }
 
-        return list.toArray(new Edge[0]);
+        return sum;
     }
 
-    static class Edge implements Comparable<Edge> {
-        int from;
-        int to;
+    private static void init() throws IOException {
+        N = Integer.parseInt(br.readLine());
+
+        dx = new int[N];
+        dy = new int[N];
+        adjList = new List[N + 1];
+        visited = new boolean[N + 1];
+
+        for (int i = 0; i < N + 1; i++) {
+            adjList[i] = new ArrayList<>();
+        }
+
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            dx[i] = Integer.parseInt(st.nextToken());
+        }
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            dy[i] = Integer.parseInt(st.nextToken());
+        }
+
+        tax = Double.parseDouble(br.readLine());
+
+        buildEdges();
+    }
+
+    public static void buildEdges() {
+
+        for (int i = 0; i < N; i++) {
+            for (int j = i + 1; j < N; j++) {
+                long nx = dx[i] - dx[j];
+                long ny = dy[i] - dy[j];
+
+                long w = nx * nx + ny * ny;
+                adjList[i].add(new Node(j, w));
+                adjList[j].add(new Node(i, w));
+            }
+        }
+    }
+
+    static class Node implements Comparable<Node> {
+        int vertex;
         long weight;
 
-        public Edge(int from, int to, long weight) {
-            this.from = from;
-            this.to = to;
+        public Node(int vertex, long weight) {
+            this.vertex = vertex;
             this.weight = weight;
         }
 
         @Override
-        public int compareTo(Edge o) {
+        public int compareTo(Node o) {
             return Long.compare(this.weight, o.weight);
         }
     }
