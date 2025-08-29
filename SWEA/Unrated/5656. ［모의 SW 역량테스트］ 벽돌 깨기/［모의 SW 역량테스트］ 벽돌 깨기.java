@@ -31,15 +31,17 @@ public class Solution {
 
             for (int i = 0; i < H; i++) {
                 st = new StringTokenizer(br.readLine());
+
                 for (int j = 0; j < W; j++) {
                     map[i][j] = Integer.parseInt(st.nextToken());
-                    if (map[i][j] > 0)
+                    if (map[i][j] >= 1) {
                         total++;
+                    }
                 }
             }
 
             answer = total;
-            dfs(0, map, total);
+            go(map, 0, total);
 
             sb.append('#')
                     .append(t)
@@ -51,100 +53,104 @@ public class Solution {
         System.out.println(sb);
     }
 
-    public static void dfs(int depth, int[][] map, int remain) {
+    public static void go(int[][] next, int depth, int remain) {
         if (remain == 0) {
             answer = 0;
             return;
         }
+
         if (depth == N) {
             answer = Math.min(answer, remain);
             return;
         }
+
         if (answer == 0) {
             return;
         }
 
         for (int c = 0; c < W; c++) {
-            int r = findFirst(map, c);
+            int r = findFirstRow(next, c);
             if (r == -1) {
-                dfs(depth + 1, map, remain);
+                go(next, depth + 1, remain);
             } else {
-                int[][] newMap = copyMap(map);
-                int explosed = explose(r, c, newMap);
+                int[][] newMap = copyMap(next);
+                int explosed = explose(newMap, r, c);
                 drop(newMap);
-                dfs(depth + 1, newMap, remain - explosed);
-            }
-
-            if (answer == 0)
-                break;
-        }
-    }
-
-    public static void drop(int[][] newMap) {
-        for (int c = 0; c < W; c++) {
-            int pos = H - 1;
-            for (int r = H - 1; r >= 0; r--) {
-                if (newMap[r][c] != 0) {
-                    int temp = newMap[r][c];
-                    newMap[r][c] = 0;
-                    newMap[pos--][c] = temp;
+                go(newMap, depth + 1, remain - explosed);
+                if (answer == 0) {
+                    return;
                 }
             }
         }
     }
 
-    public static int explose(int x, int y, int[][] newMap) {
-        int explosed = 0;
-        Queue<int[]> q = new LinkedList<>();
+    private static void drop(int[][] newMap) {
+        for (int c = 0; c < W; c++) {
+            int h = H - 1;
+            for (int r = H - 1; r >= 0; r--) {
+                if (newMap[r][c] != 0) {
+                    int temp = newMap[r][c];
+                    newMap[r][c] = 0;
+                    newMap[h--][c] = temp;
+                }
+            }
+        }
+    }
 
-        if (newMap[x][y] >= 1) {
-            q.offer(new int[] { x, y, newMap[x][y] });
+    private static int explose(int[][] map, int x, int y) {
+        Queue<int[]> q = new LinkedList<>();
+        int explosed = 0;
+
+        if (map[x][y] > 1) {
+            q.offer(new int[] { x, y, map[x][y] });
         }
 
-        newMap[x][y] = 0;
+        map[x][y] = 0;
         explosed++;
 
         while (!q.isEmpty()) {
             int[] current = q.poll();
-            int r = current[0], c = current[1], power = current[2];
+
+            int cx = current[0], cy = current[1], power = current[2];
             for (int i = 0; i < 4; i++) {
-                int nx = r;
-                int ny = c;
+                int nx = cx;
+                int ny = cy;
                 for (int j = 1; j < power; j++) {
                     nx += dx[i];
                     ny += dy[i];
 
                     if (nx < 0 || ny < 0 || nx >= H || ny >= W)
                         break;
-                    if (newMap[nx][ny] == 0)
+                    if (map[nx][ny] == 0)
                         continue;
-                    if (newMap[nx][ny] > 1)
-                        q.offer(new int[] { nx, ny, newMap[nx][ny] });
 
-                    newMap[nx][ny] = 0;
+                    if (map[nx][ny] > 1) {
+                        q.offer(new int[] { nx, ny, map[nx][ny] });
+                    }
+                    map[nx][ny] = 0;
                     explosed++;
                 }
             }
+
         }
 
         return explosed;
     }
 
-    public static int findFirst(int[][] map, int c) {
-        for (int r = 0; r < H; r++) {
-            if (map[r][c] > 0)
-                return r;
+    private static int[][] copyMap(int[][] map) {
+        int[][] newMap = new int[H][W];
+        for (int i = 0; i < H; i++) {
+            System.arraycopy(map[i], 0, newMap[i], 0, W);
         }
-        return -1;
+        return newMap;
     }
 
-    public static int[][] copyMap(int[][] srcMap) {
-        int[][] newMap = new int[H][W];
-
-        for (int i = 0; i < H; i++) {
-            System.arraycopy(srcMap[i], 0, newMap[i], 0, W);
+    private static int findFirstRow(int[][] next, int c) {
+        for (int r = 0; r < H; r++) {
+            if (next[r][c] >= 1) {
+                return r;
+            }
         }
-
-        return newMap;
+        return -1;
     }
 }
