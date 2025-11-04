@@ -6,7 +6,7 @@ public class Solution {
     static StringBuilder sb = new StringBuilder();
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static StringTokenizer st = null;
+    static StringTokenizer st;
 
     static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, 1, 0, -1};
@@ -15,12 +15,10 @@ public class Solution {
 
     static int[][] map;
     static boolean[][] visited;
-    static List<int[]> tops;
 
     static int maxDepth;
 
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         T = Integer.parseInt(br.readLine());
 
         for (int t = 1; t <= T; t++) {
@@ -30,7 +28,6 @@ public class Solution {
 
             map = new int[N][N];
             visited = new boolean[N][N];
-            tops = new ArrayList<>();
             maxDepth = 0x80000000;
 
             int maxHeight = 0x80000000;
@@ -51,6 +48,7 @@ public class Solution {
                     }
                 }
             }
+
             sb.append('#')
                     .append(t)
                     .append(' ')
@@ -61,21 +59,21 @@ public class Solution {
         System.out.println(sb);
     }
 
-    private static void go(int x, int y, int depth, boolean isCut) {
+    private static void go(int x, int y, int depth, boolean hasCut) {
         maxDepth = Math.max(maxDepth, depth);
 
-        for (int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
+        for (int d = 0; d < 4; d++) {
+            int nx = x + dx[d];
+            int ny = y + dy[d];
 
             if (nx < 0 || ny < 0 || nx >= N || ny >= N) continue;
             if (visited[nx][ny]) continue;
 
-            if (map[nx][ny] < map[x][y]) { // 이전 높이보다 낮으면
+            if (map[nx][ny] < map[x][y]) {
                 visited[nx][ny] = true;
-                go(nx, ny, depth + 1, isCut);
+                go(nx, ny, depth + 1, hasCut);
                 visited[nx][ny] = false;
-            } else if (!isCut && map[nx][ny] - K < map[x][y]) {
+            } else if (!hasCut && map[nx][ny] - K < map[x][y]) {
                 int origin = map[nx][ny];
                 map[nx][ny] = map[x][y] - 1;
 
