@@ -1,59 +1,70 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-class Solution {
+public class Solution {
 
-    static int[] arr = new int[200];
+    static StringBuilder sb = new StringBuilder();
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = null;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringTokenizer st;
 
-        int T = Integer.parseInt(br.readLine());
+    static int T, N, M;
+
+    static int max;
+
+    static int[] a, b;
+
+    public static void main(String[] args) throws Exception {
+        T = Integer.parseInt(br.readLine());
+
         for (int t = 1; t <= T; t++) {
             st = new StringTokenizer(br.readLine());
-            int n = Integer.parseInt(st.nextToken());
-            int m = Integer.parseInt(st.nextToken());
 
-            int[] a = new int[n];
-            int[] b = new int[m];
+            N = Integer.parseInt(st.nextToken());
+            M = Integer.parseInt(st.nextToken());
+
+            a = new int[N];
+            b = new int[M];
+            max = 0x80000000;
 
             st = new StringTokenizer(br.readLine());
-            for (int i = 0; i < n; i++) {
+            for (int i = 0; i < N; i++) {
                 a[i] = Integer.parseInt(st.nextToken());
             }
 
             st = new StringTokenizer(br.readLine());
-            for (int i = 0; i < m; i++) {
+            for (int i = 0; i < M; i++) {
                 b[i] = Integer.parseInt(st.nextToken());
             }
 
-            int max = Integer.MIN_VALUE;
+            go();
 
-            if (n < m) { // 두번쨰가 더 길면
-                for (int i = 0; i <= m - n; i++) { // 0 ~ n, 1 ~ n + 1
-                    int sum = 0;
-                    for (int j = i; j < i + n; j++) {
-                        sum += b[j] * a[j - i];
-                    }
-                    max = Math.max(max, sum);
+            sb.append('#')
+                    .append(t)
+                    .append(' ')
+                    .append(max)
+                    .append('\n');
+        }
+
+        System.out.println(sb);
+    }
+
+
+    private static void go() {
+        int maxLen = Math.max(N, M);
+        int minLen = Math.min(N, M);
+
+        for (int i = 0; i < maxLen - minLen + 1; i++) {
+            int sum = 0;
+            for (int j = 0; j < minLen; j++) {
+                if (maxLen == N) {
+                    sum += b[j] * a[i + j];
+                } else {
+                    sum += a[j] * b[i + j];
                 }
-            } else if (n > m) {
-                for (int i = 0; i <= n - m; i++) { // 0 ~ n, 1 ~ n + 1
-                    int sum = 0;
-                    for (int j = i; j < i + m; j++) {
-                        sum += a[j] * b[j - i];
-                    }
-                    max = Math.max(max, sum);
-                }
-            } else {
-                int sum = 0;
-                for (int i = 0; i < n; i++) {
-                    sum += a[i] * b[i];
-                }
-                max = sum;
             }
-            System.out.printf("#%d %d\n", t, max);
+            max = Math.max(max, sum);
         }
     }
 }
