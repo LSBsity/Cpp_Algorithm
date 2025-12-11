@@ -5,13 +5,13 @@ import java.util.Deque;
 import java.util.StringTokenizer;
 
 public class Main {
-
     static StringBuilder sb = new StringBuilder();
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
 
     static int T;
+
     static String infix;
 
     public static void main(String[] args) throws Exception {
@@ -22,26 +22,25 @@ public class Main {
 
             sb.append(go());
         }
+
         System.out.println(sb);
     }
 
     private static String go() {
-        StringBuilder postfix = new StringBuilder();
         Deque<Character> stk = new ArrayDeque<>();
+        StringBuilder postfix = new StringBuilder();
 
         for (char c : infix.toCharArray()) {
-            if (Character.isLetter(c)) { // 피연산자면 바로 출력
+            if (Character.isLetter(c)) { // 피연산자면 출력
                 postfix.append(c);
 
-            } else if (c == '(') { // 여는 괄호면 stk push
+            } else if (c == '(') { // 여는 괄호면 push
                 stk.push(c);
-
-            } else if (c == ')') { // 닫는 괄호면 여는 괄호를 만날 때 까지 pop
+            } else if (c == ')') { // 닫는 괄호면 여는 괄호까지 pop
                 while (!stk.isEmpty() && stk.peek() != '(') {
                     postfix.append(stk.pop());
                 }
-                stk.pop(); // '(' 제거
-
+                stk.pop();
             } else { // 연산자면
                 while (!stk.isEmpty() && precedence(c) <= precedence(stk.peek())) {
                     postfix.append(stk.pop());
