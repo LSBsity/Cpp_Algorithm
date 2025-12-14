@@ -11,7 +11,7 @@ public class Main {
     static int N, M;
 
     static int[][] map;
-    static int[][] result;            // [변경] 결과 전용 배열
+    static int[][] result;            
     static boolean[][] visited;
 
     static int[] dx = {-1, 0, 1, 0};
@@ -23,13 +23,13 @@ public class Main {
         M = Integer.parseInt(st.nextToken());
 
         map = new int[N][M];
-        result = new int[N][M];        // [변경] 결과 배열 초기화
+        result = new int[N][M];        
 
         for (int i = 0; i < N; i++) {
             char[] chars = br.readLine().toCharArray();
             for (int j = 0; j < M; j++) {
                 map[i][j] = chars[j] - '0';
-                result[i][j] = map[i][j]; // [변경] 벽이면 1, 빈칸이면 0 유지
+                result[i][j] = map[i][j]; 
             }
         }
 
@@ -50,7 +50,7 @@ public class Main {
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
-                sb.append(result[i][j] % 10); // [변경] result 출력
+                sb.append(result[i][j] % 10); 
             }
             sb.append('\n');
         }
@@ -58,12 +58,10 @@ public class Main {
 
     private static void bfs(int x, int y) {
         Queue<int[]> q = new ArrayDeque<>();
-        List<int[]> zeros = new ArrayList<>();   // [유지] 0 컴포넌트 저장
-        Set<Integer> walls = new HashSet<>();    // [유지] 인접 벽 중복 제거
+        Set<Integer> walls = new HashSet<>();    
 
         q.offer(new int[]{x, y});
         visited[x][y] = true;
-        zeros.add(new int[]{x, y});
 
         int cnt = 1;
         while (!q.isEmpty()) {
@@ -78,15 +76,13 @@ public class Main {
                 if (map[nx][ny] == 0 && !visited[nx][ny]) {
                     visited[nx][ny] = true;
                     q.offer(new int[]{nx, ny});
-                    zeros.add(new int[]{nx, ny});
                     cnt++;
                 } else if (map[nx][ny] == 1) {
-                    walls.add(nx * M + ny); // 좌표 압축
+                    walls.add(nx * M + ny); 
                 }
             }
         }
-
-        // [변경] 벽에 결과를 누적 (입력 map이 아니라 result에!)
+        
         for (int key : walls) {
             int wx = key / M;
             int wy = key % M;
