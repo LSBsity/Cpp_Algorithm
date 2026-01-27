@@ -16,7 +16,6 @@ public class Main {
 
         for (int t = 1; t <= T; t++) {
             N = Integer.parseInt(br.readLine());
-
             Trie trie = new Trie();
 
             boolean ok = true;
@@ -28,8 +27,7 @@ public class Main {
                     }
                 }
             }
-            sb.append(ok ? "YES" : "NO")
-                    .append('\n');
+            sb.append(ok ? "YES" : "NO").append('\n');
         }
 
         System.out.print(sb);
@@ -42,37 +40,44 @@ public class Main {
             this.root = new Node();
         }
 
-        boolean insert(String str) {
-            Node node = root;
+        public boolean insert(String num) {
+            Node current = this.root;
 
-            for (int i = 0; i < str.length(); i++) {
-                char c = str.charAt(i);
+            for (int i = 0; i < num.length(); i++) {
+                char c = num.charAt(i);
 
-                if (node.isEnd) return false;
-
-                if (node.child[c - '0'] == null) {
-                    node.child[c - '0'] = new Node();
+                if (current.isEnd) {
+                    return false;
                 }
-                node = node.child[c - '0'];
+
+                if (current.child[c - '0'] == null) {
+                    current.child[c - '0'] = new Node();
+                }
+
+                current = current.child[c - '0'];
             }
 
-            if (node.hasChild()) return false;
+            if (current.hasChild()) {
+                return false;
+            }
 
-            node.isEnd = true;
+            current.isEnd = true;
             return true;
         }
-
 
         static class Node {
             Node[] child = new Node[10];
             boolean isEnd = false;
 
-            boolean hasChild() {
+            public boolean hasChild() {
                 for (Node n : child) {
-                    if (n != null) return true;
+                    if (n != null) {
+                        return true;
+                    }
                 }
                 return false;
             }
         }
     }
+
 }
