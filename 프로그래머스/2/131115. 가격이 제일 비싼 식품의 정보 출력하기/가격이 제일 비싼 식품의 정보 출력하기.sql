@@ -1,6 +1,11 @@
-select fp.product_id, fp.product_name, fp.product_cd, fp.category, fp.price
-from food_product fp
-where fp.price = (
-    select max(fp.price)
-    from food_product fp
+select
+  p.product_id,
+  p.product_name,
+  p.product_cd,
+  p.category,
+  p.price
+from food_product p
+where p.price = (
+    select max(p2.price)
+    from food_product p2
 );
