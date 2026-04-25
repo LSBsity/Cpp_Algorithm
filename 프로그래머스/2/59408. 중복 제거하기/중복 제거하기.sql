@@ -1,3 +1,2 @@
-select count(distinct ai.name) as count
+select count(distinct ai.name)
 from animal_ins ai
-where ai.name is not null;
