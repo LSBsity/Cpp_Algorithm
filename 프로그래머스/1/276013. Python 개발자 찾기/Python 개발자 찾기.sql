@@ -1,7 +1,6 @@
-select i.id,
-       i.email,
-       i.first_name,
-       i.last_name
-from developer_infos i
-where i.skill_1 = 'Python' or i.skill_2 = 'Python' or i.skill_3 = 'Python'
-order by i.id asc;
+select di.id, di.email, di.first_name, di.last_name
+from developer_infos di
+where di.skill_1 = 'Python' or
+  di.skill_2 = 'Python' or
+  di.skill_3 = 'Python'
+ order by di.id
