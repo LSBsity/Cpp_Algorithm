@@ -1,12 +1,8 @@
-select d.id,
-       d.genotype,
-       (select sub_d.genotype
-       from ecoli_data sub_d
-       where sub_d.id = d.parent_id) as parent_genotype
-from ecoli_data d
-where d.genotype | (
-    select sub_d.genotype
-    from ecoli_data sub_d
-    where sub_d.id = d.parent_id
-) = d.genotype
-order by d.id asc;
+select
+  ed1.id,
+  ed1.genotype,
+  ed2.genotype as parent_genotype
+from ecoli_data ed1
+left join ecoli_data ed2 on ed1.parent_id = ed2.id
+where ed1.genotype & ed2.genotype = ed2.genotype
+order by ed1.id;
