@@ -1,20 +1,19 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.*;
 
-class Solution {
-
-    public int solution(String s) {
+class Solution{
+    public int solution(String s){
         Deque<Character> stk = new ArrayDeque<>();
-
-        for (int i = 0; i < s.length(); i++) {
-            if (stk.isEmpty() || stk.peek() != s.charAt(i)) {
-                stk.push(s.charAt(i));
-            } else {
+        
+        for (char c : s.toCharArray()) {
+            if (stk.isEmpty()) {
+                stk.push(c);
+            } else if (stk.peek() == c) {
                 stk.pop();
+            } else {
+                stk.push(c);
             }
-
         }
-
+        
         return stk.isEmpty() ? 1 : 0;
     }
 }
