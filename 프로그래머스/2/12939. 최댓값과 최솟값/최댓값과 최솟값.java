@@ -1,17 +1,10 @@
+import java.util.*;
+
 class Solution {
     public String solution(String s) {
-        int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
+        String[] splits = s.split(" ");
+        Arrays.sort(splits, (a, b) -> Integer.parseInt(a) - Integer.parseInt(b));
         
-        for (String str : s.split(" ")) {
-            int parsed = Integer.parseInt(str);
-            if (parsed > max) {
-                max = parsed;
-            }
-            if (parsed < min) {
-                min = parsed;
-            }
-        }
-        
-        return String.format("%d %d", min, max);
+        return splits[0] + " " + splits[splits.length - 1];
     }
 }
