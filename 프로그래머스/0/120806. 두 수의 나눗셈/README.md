@@ -1,6 +1,6 @@
 # [level 0] 두 수의 나눗셈 - 120806 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120806?language=cpp) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120806) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2026년 05월 07일 17:42:07
+2026년 05월 07일 17:42:24
 
 ### 문제 설명
 
