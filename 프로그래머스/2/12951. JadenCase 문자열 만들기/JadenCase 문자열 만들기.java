@@ -1,18 +1,29 @@
+import java.util.*;
+
 class Solution {
-
     public String solution(String s) {
-        char[] arr = s.toCharArray();
-        char last = ' ';
-        for (int i = 0; i < arr.length; i++) {
-            char c = arr[i];
-            if (last == ' ' && Character.isAlphabetic(c)) {
-                arr[i] = Character.toUpperCase(c);
-            } else {
-                arr[i] = Character.toLowerCase(c);
+        StringBuilder sb = new StringBuilder();
+        
+        boolean isBlank = true;
+        for (char c : s.toCharArray()) {
+            if (c == ' ') {
+                sb.append(c);
+                isBlank = true;
+                continue;
             }
-            last = c;
+            
+            if (isBlank) {
+                if (Character.isAlphabetic(c)) {
+                    sb.append(Character.toUpperCase(c));
+                } else {
+                    sb.append(c);
+                }
+                isBlank = false;
+            } else {
+                sb.append(Character.toLowerCase(c));
+            }
         }
-
-        return new String(arr);
+        
+        return sb.toString();
     }
 }
