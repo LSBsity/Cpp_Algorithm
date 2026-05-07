@@ -1,13 +1,6 @@
-select d.id
-from ecoli_data d
-where d.parent_id in (
-    select sub_sub_d.id
-    from ecoli_data sub_sub_d
-    where sub_sub_d.parent_id in (
-        select sub_d.id
-        from ecoli_data sub_d
-        where sub_d.parent_id is null
-    )
-)
-order by d.id asc;
-    
+select ed1.id
+from ecoli_data ed1
+  join ecoli_data ed2 on ed1.parent_id = ed2.id
+  join ecoli_data ed3 on ed2.parent_id = ed3.id
+ where ed3.parent_id is null
+order by ed1.id;
