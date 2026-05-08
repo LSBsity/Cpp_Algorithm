@@ -1,22 +1,19 @@
 import java.util.*;
-import java.util.stream.*;
 
 class Solution {
-
     public int solution(int[] elements) {
         Set<Integer> set = new HashSet<>();
-        for (int i = 0; i < elements.length; i++) {
-            List<Integer> list = Arrays.stream(elements).boxed().collect(Collectors.toList());
-            Collections.rotate(list, i + 1);
-            for (int j = 1; j <= elements.length; j++) {
+
+        for (int i = 1; i <= elements.length; i++) {
+            for (int j = 0; j < elements.length; j++) {
                 int sum = 0;
-                for (int k = 0; k < j; k++) {
-                    Integer gets = list.get(k);
-                    sum += gets;
+                for (int k = j; k < j + i; k++) {
+                    sum += elements[k % elements.length];
                 }
                 set.add(sum);
             }
         }
+        
         return set.size();
     }
 }
