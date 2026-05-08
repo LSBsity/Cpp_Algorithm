@@ -1,26 +1,24 @@
 import java.util.*;
 
 class Solution {
-
     public int solution(int k, int[] tangerines) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int tangerine : tangerines) {
-            map.put(tangerine, map.getOrDefault(tangerine, 0) + 1);
-        }
-
-        List<Integer> keySet = new ArrayList<>(map.keySet());
-        keySet.sort((o2, o1) -> map.get(o1).compareTo(map.get(o2)));
-
         int answer = 0;
-        for (Integer key : keySet) {
-            Integer value = map.get(key);
-            k -= value;
+        
+        Map<Integer, Integer> count = new HashMap<>();
+        for (int tangerine : tangerines) {
+            count.merge(tangerine, 1, Integer::sum);
+        }
+        
+        List<Integer> list = new ArrayList<>(count.keySet());
+        list.sort((a, b) -> count.get(b) - count.get(a));
+        
+        for (int i : list) {
+            k -= count.get(i);
             answer++;
-
+            
             if (k <= 0) break;
         }
-
+        
         return answer;
     }
-
 }
