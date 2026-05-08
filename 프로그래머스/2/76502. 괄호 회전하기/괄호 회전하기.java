@@ -1,50 +1,44 @@
-import java.util.ArrayDeque;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 class Solution {
-
+    
+    static Map<Character, Character> map = new HashMap<>();
+    
     public int solution(String s) {
-        List<String> list = s.chars().mapToObj(i -> String.valueOf((char) i))
-                .collect(Collectors.toList());
+        int answer = 0;
+        map.put('(', ')');
+        map.put('[', ']');
+        map.put('{', '}');
         
-        int count = 0;
         for (int i = 0; i < s.length(); i++) {
-            if (check(String.join("", list))) {
-                count++;
-            }
-            Collections.rotate(list, -1);
+            if (this.go(i, s)) answer++;            
         }
-
-        return count;
+        
+        return answer;
     }
-
-    public boolean check(String str) {
+    
+    private boolean go(int start, String s) {
         Deque<Character> stk = new ArrayDeque<>();
-        for (char c : str.toCharArray()) {
-            if (stk.isEmpty()) {
+
+        int idx = start;
+        int cnt = s.length();
+        
+        while (--cnt >= 0) {
+            char c = s.charAt(idx);
+            
+            if (c == '(' || c == '[' || c == '{') {
                 stk.push(c);
-            } else if (c == ')') {
-                if (stk.peek() != '(') {
-                    return false;
-                }
-                stk.pop();
-            } else if (c == '}') {
-                if (stk.peek() != '{') {
-                    return false;
-                }
-                stk.pop();
-            } else if (c == ']') {
-                if (stk.peek() != '[') {
-                    return false;
-                }
-                stk.pop();
             } else {
-                stk.push(c);
+                if (stk.isEmpty()) return false;
+                if (map.get(stk.peek()) != c) {
+                    return false;
+                }
+                stk.pop();
             }
-        }
+            
+            idx = (idx + 1) % s.length();
+        } 
+        
         return stk.isEmpty();
     }
 }
