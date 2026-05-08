@@ -1,22 +1,22 @@
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
 class Solution {
-
-    private final Set<String> set = new HashSet<>();
-
     public int[] solution(int n, String[] words) {
-        String last = words[0];
-        set.add(last);
-
-        for (int i = 1; i < words.length; i++) {
-            if (last.charAt(last.length() - 1) != words[i].charAt(0) || !set.add(words[i])) {
-                return new int[]{(i % n) + 1, (i / n) + 1};
+        Set<String> set = new HashSet<>();
+        
+        char last = words[0].charAt(0);
+        int idx = 1, cnt = 1;
+        for (String word : words) {
+            if (last != word.charAt(0) || !set.add(word)) {
+                return new int[] {idx, (cnt - 1) / n + 1};
             }
-
-            last = words[i];
+            last = word.charAt(word.length() - 1);
+            idx = idx % n + 1;
+            cnt++;
         }
 
-        return new int[]{0, 0};
+        return new int[] {0, 0};
     }
 }
+
+// 0 1 2 3 4 5 6 7
