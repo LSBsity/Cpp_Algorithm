@@ -1,22 +1,21 @@
-import java.util.Arrays;
-class Solution {
+import java.util.*;
 
+class Solution {
     public int solution(int[] people, int limit) {
         Arrays.sort(people);
-        int front = 0;
-        int rear = people.length - 1;
-
-        int count = 0;
-        while (front <= rear) {
-            if (people[front] + people[rear] <= limit) {
-                front++;
-                rear--;
-            } else {
-                rear--;
+        
+        int answer = 0;
+        int left = 0;
+        int right = people.length - 1;
+        
+        while (left <= right) {
+            if (people[left] + people[right] <= limit) {
+                left++;
             }
-            ++count;
+            right--;      
+            answer++;     
         }
-
-        return count;
+        
+        return answer;
     }
 }
