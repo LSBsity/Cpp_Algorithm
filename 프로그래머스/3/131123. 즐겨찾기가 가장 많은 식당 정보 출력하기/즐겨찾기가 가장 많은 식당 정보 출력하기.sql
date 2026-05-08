@@ -1,12 +1,12 @@
-select ri.food_type,
-       ri.rest_id,
-       ri.rest_name,
-       ri.favorites
-from rest_info ri
-where ri.favorites = (
-    select max(sub_ri.favorites)
-    from rest_info sub_ri
-    where ri.food_type = sub_ri.food_type
+select
+  i.food_type,
+  i.rest_id,
+  i.rest_name,
+  i.favorites
+from rest_info i
+where i.favorites = (
+    select max(i2.favorites)
+    from rest_info i2
+    where i2.food_type = i.food_type
 )
-group by ri.food_type
-order by ri.food_type desc;
+order by i.food_type desc;
