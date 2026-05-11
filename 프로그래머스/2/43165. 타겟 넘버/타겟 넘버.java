@@ -1,39 +1,29 @@
 import java.util.*;
 
 class Solution {
-
-    int total;
-    int target;
-    int count = 0;
-
-    public void combi(int[] numbers, List<Integer> combi, int start, int r) {
-        if (combi.size() == r) {
-            int sum = combi.stream().mapToInt(i -> i).sum() * 2;
-            if (this.total - sum == this.target) {
-                this.count++;
-            }
-            return;
-        }
-        
-        for (int i = start; i < numbers.length; i++) {
-            combi.add(numbers[i]);
-            this.combi(numbers, combi, i + 1, r);
-            combi.remove(combi.size() - 1);
-        }
+    public int solution(int[] numbers, int target) {
+        return this.go(numbers, target);
     }
     
-    public int solution(int[] numbers, int target) {
+    private int go(int[] numbers, int target) {
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[] {0, 0});
+   
+        int count = 0;
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
 
-        for (int i = 0; i < numbers.length; i++) {
-            this.total += numbers[i];
+            if (cur[0] == numbers.length) {
+                if (cur[1] == target) {
+                    count++;
+                }
+                continue;
+            }
+            
+            q.offer(new int[] {cur[0] + 1, cur[1] + numbers[cur[0]]});
+            q.offer(new int[] {cur[0] + 1, cur[1] - numbers[cur[0]]});
         }
-        this.target = target;
-
-        for (int i = 1; i <= numbers.length; i++) {
-            List<Integer> combi = new ArrayList<>();
-            combi(numbers, combi, 0, i);
-        }
-        
+ 
         return count;
     }
 }
