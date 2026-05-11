@@ -1,25 +1,41 @@
+import java.util.*;
+
 class Solution {
-    
-    private void go(int[][] computers, boolean[] v, int node) {
-        v[node] = true;
-        for (int i = 0; i < computers[0].length; i++) {
-            if (!v[i] && computers[node][i] == 1) {
-                this.go(computers, v, i);
-            }
-        }
-    }
-    
     public int solution(int n, int[][] computers) {
         int answer = 0;
         
-        boolean[] v = new boolean[n];
+        List<Integer>[] list = new ArrayList[n];
         for (int i = 0; i < n; i++) {
-            if (!v[i]) {
-                this.go(computers, v, i);
-                answer++;
+            list[i] = new ArrayList<>();
+        }
+        
+        for (int i = 0; i < computers.length; i++) {
+            for (int j = 0; j < computers[0].length; j++) {
+                if (computers[i][j] == 1) {
+                    list[i].add(j);
+                    list[j].add(i);
+                }
             }
         }
         
-        return answer;
+        boolean[] visited = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                go(i, list, visited);
+                answer++;    
+            }
+        }
+        
+        return answer++;
     }
+
+    private static void go(int start, List<Integer>[] nodes, boolean[] visited) {
+        if (visited[start]) return;
+        visited[start] = true;
+        
+        for (int i : nodes[start]) {    
+            go(i, nodes, visited);    
+        }
+    }    
+
 }
