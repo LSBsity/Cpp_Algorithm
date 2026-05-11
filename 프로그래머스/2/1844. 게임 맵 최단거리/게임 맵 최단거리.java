@@ -2,47 +2,40 @@ import java.util.*;
 
 class Solution {
     
-    int[] dx = {-1, 1, 0, 0};
-    int[] dy = {0, 0, 1, -1};
-    
-    static class Node {
-        int x;
-        int y;
-        int dist;
-        
-        public Node(int x, int y, int dist) {
-            this.x = x;
-            this.y = y;
-            this.dist = dist;
-        }
-    }
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
     
     public int solution(int[][] maps) {
+        return go(maps);
+    }
+    
+    private static int go(int[][] maps) {
+        Queue<int[]> q = new LinkedList<>();
         int n = maps.length;
         int m = maps[0].length;
         
         boolean[][] visited = new boolean[n][m];
-        Queue<Node> q = new LinkedList<>();
-        q.add(new Node(0, 0, 1));
+        
+        q.offer(new int[] {0, 0, 1});
+        visited[0][0] = true;
+        
         while (!q.isEmpty()) {
-            Node node = q.poll();
-            int x = node.x;
-            int y = node.y;
-            int dist = node.dist;
+            int[] cur = q.poll();
             
-            if (x == n - 1 && y == m - 1) return dist;
+            if (cur[0] == n - 1&& cur[1] == m - 1) return cur[2];
             
             for (int i = 0; i < 4; i++) {
-                int nx = x + this.dx[i];
-                int ny = y + this.dy[i];
+                int nx = cur[0] + dx[i];
+                int ny = cur[1] + dy[i];
                 
-                if (nx >= 0 && nx < n && ny >= 0 && ny < m && !visited[nx][ny] && maps[nx][ny] == 1) {
-                    visited[nx][ny] = true;
-                    q.add(new Node(nx, ny, dist + 1));
-                }
-            } 
+                if (nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
+                if (maps[nx][ny] == 0) continue;
+                if (visited[nx][ny]) continue;
+                
+                q.offer(new int[] {nx, ny, cur[2] + 1});
+                visited[nx][ny] = true;
+            }
         }
-        
         
         return -1;
     }
