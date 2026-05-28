@@ -1,22 +1,15 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 class Solution {
-
     boolean solution(String s) {
-        Deque<Character> stk = new ArrayDeque<>();
-
+        int count = 0;
+        
         for (char c : s.toCharArray()) {
-            if (c == '(') {
-                stk.push(c);
-            } else if (c == ')') {
-                if (stk.isEmpty() || stk.peek() != '(') {
-                    return false;
-                }
-                stk.pop();
+            if (c == '(') count++;
+            else {
+                if (count == 0) return false;
+                count--;
             }
         }
-
-        return stk.isEmpty();
+        
+        return count == 0;
     }
 }
