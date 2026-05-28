@@ -1,34 +1,58 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int k, int[][] arr) {
-        return this.permute(arr, 0, k);
+
+    static int[] arr, result;
+    static boolean[] visited;
+    static int len;
+    static int max = Integer.MIN_VALUE;
+    
+    public int solution(int k, int[][] dungeons) {
+        int answer = -1;
+        
+        len = dungeons.length;
+        arr = new int[len];
+        result = new int[len];
+        visited = new boolean[len];
+        
+        for (int i = 0; i < len; i++) {
+            arr[i] = i;
+        }
+        
+        perm(0, dungeons, k);
+
+        return max;
     }
     
-    public int permute(int[][] arr, int index, int k) {
-        int cnt = 0;
-        if (index == arr.length) {
-            int max = k;
-            for (int[] ints : arr) {
-                if (ints[0] <= max) {
-                    cnt++;
-                    max -= ints[1];
-                }
+    private static void perm(int depth, int[][] dungeons, int k) {
+        if (depth == len) {
+            go(dungeons, k);
+            return;
+        }
+        
+        for (int i = 0; i < len; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                result[depth] = arr[i];
+                perm(depth + 1, dungeons, k);
+                visited[i] = false;
             }
-            return cnt;
         }
-        int temp = 0;
-        for (int i = index; i < arr.length; i++) {
-            this.swap(arr, index, i);
-            temp = Math.max(temp, this.permute(arr, index + 1, k));
-            this.swap(arr, index, i);
-        }
-        return temp;
     }
-
-    private void swap(int[][] arr, int i, int j) {
-        int[] temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+    
+    private static void go(int[][] dungeons, int k) {
+        int val = k;
+        int cnt = 0;
+        for (int i = 0; i < len; i++) {
+            int need = dungeons[result[i]][0];
+            int sub = dungeons[result[i]][1];
+            
+            if (val >= need) val -= sub;
+            else break;
+                
+            cnt++;
+        }
+        
+        max = Math.max(max, cnt);
     }
 }
