@@ -1,21 +1,27 @@
-import java.util.*;
-
 class Solution {
-    List<String> dictionary = new ArrayList<>();
-    String[] words = {"A", "E", "I", "O", "U"};
     
-    private void generate(String current) {
-        if (current.length() > 5) return;
-        
-        dictionary.add(current);
-        
-        for (String w : words) {
-            generate(current + w);
-        }
-    }
+    static char[] chars = {'A', 'E', 'I', 'O', 'U'};
+    static int cnt = 0;
+    static int answer = 0;
     
     public int solution(String word) {
-        generate("");
-        return dictionary.indexOf(word);
+        go(new StringBuilder(), word);
+        return answer;
+    }
+    
+    private static void go(StringBuilder sb, String target) {
+        if (sb.length() > 5) return;
+        
+        if (sb.toString().equals(target)) {
+            answer = cnt;
+            return;
+        }
+
+        cnt++;
+        for (int i = 0; i < 5; i++) {
+            sb.append(chars[i]);
+            go(sb, target);
+            sb.deleteCharAt(sb.length() - 1);
+        }
     }
 }
