@@ -1,35 +1,60 @@
 import java.util.*;
 
 class Solution {
+    
+    static List<Integer>[] graph;
+    static boolean[] visited;
+    static int max = Integer.MIN_VALUE;
+    
     public int solution(int n, int[][] edges) {
-        List<List<Integer>> nodes = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
-            nodes.add(new ArrayList<>());
+        graph = new ArrayList[n + 1];
+        visited = new boolean[n + 1];
+        
+        for (int i = 1; i <= n; i++) {
+            graph[i] = new ArrayList<>();
         }
         
         for (int[] edge : edges) {
-            nodes.get(edge[1]).add(edge[0]);
-            nodes.get(edge[0]).add(edge[1]);
+            int u = edge[0];
+            int v = edge[1];
+            
+            graph[u].add(v);
+            graph[v].add(u);
         }
         
-        Queue<Integer> q = new LinkedList<>();
-        q.offer(1);
-        int[] dist = new int[n + 1];
-        Arrays.fill(dist, -1);
-        dist[1] = 0;
+        return go(1);
+    }
+    
+    
+    private static int go(int start) {
+        Queue<int[]> q = new LinkedList<>();
+        List<int[]> list = new ArrayList<>();
+        
+        visited[start] = true;
+        q.offer(new int[] {start, 1});
+        list.add(new int[] {start, 1});
         
         while (!q.isEmpty()) {
-            int current = q.poll();
+            int[] cur = q.poll();
+            max = Math.max(max, cur[1]);  
             
-            for (int node : nodes.get(current)) {
-                if (dist[node] == -1) {
-                    q.offer(node);
-                    dist[node] = dist[current] + 1;    
-                }
+            for (int next : graph[cur[0]]) {
+                if (visited[next]) continue;
+                
+                visited[next] = true;
+                q.offer(new int[] {next, cur[1] + 1});
+                list.add(new int[] {next, cur[1] + 1});
+
+            }
+            
+        }
+        int cnt = 0;
+        for (int[] i : list) {
+            if (i[1] == max) {
+                cnt++;
             }
         }
         
-        int max = Arrays.stream(dist).max().getAsInt();
-        return (int)Arrays.stream(dist).filter(i -> i == max).count();
+        return cnt;
     }
 }
