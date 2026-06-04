@@ -1,33 +1,56 @@
+import java.util.*;
+
 class Solution {
-
-    int min = Integer.MAX_VALUE;
-
-    public void dfs(String[] words, String cur, String target, boolean[] visited, int depth) {
-        if (cur.equals(target)) {
-            min = Math.min(min, depth);
-            return;
-        }
-
-        for (int i = 0; i < words.length; i++) {
-            if (!visited[i] && check(cur, words[i])) {
-                visited[i] = true;
-                dfs(words, words[i], target, visited, depth + 1);
-                visited[i] = false;  // 백트래킹
-            }
-        }
-    }
-
-    private boolean check(String cur, String w) {
-        int count = 0;
-        for (int i = 0; i < cur.length(); i++) {
-            if (cur.charAt(i) != w.charAt(i)) count++;
-        }
-        return count == 1;
-    }
-
     public int solution(String begin, String target, String[] words) {
-        boolean[] visited = new boolean[words.length];
-        dfs(words, begin, target, visited, 0);
-        return (min == Integer.MAX_VALUE) ? 0 : min;
+        return go(words, begin, target);
+    }
+    
+    private static int go(String[] words, String begin, String target) {
+        Queue<Node> q = new LinkedList<>();
+        Set<String> set = new HashSet<>();
+        
+        q.offer(new Node(begin, 0));
+        set.add(begin);
+        
+        while (!q.isEmpty()) {
+            Node cur = q.poll();
+            
+            if (cur.str.equals(target)) {
+                return cur.level;
+            }
+            
+            for (String word : words) {
+                if (!set.contains(word) && check(cur.str, word)) {
+                    q.offer(new Node(word, cur.level + 1));
+                    set.add(word);
+                }
+            }
+            
+        }
+        
+
+        
+        return 0;
+    }
+    
+    private static boolean check(String word, String target) {
+        int cnt = 0;
+        for (int i = 0; i < word.length(); i++) {
+           if (word.charAt(i) == target.charAt(i)) {
+                cnt++;
+           }
+        }
+            
+        return cnt == word.length() - 1;
+    }
+    
+    static class Node {
+        String str;
+        int level;
+        
+        public Node (String str, int level) {
+            this.str = str;
+            this.level = level;
+        }
     }
 }
