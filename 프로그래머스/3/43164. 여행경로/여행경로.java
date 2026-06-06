@@ -2,47 +2,36 @@ import java.util.*;
 
 class Solution {
     static Map<String, List<String>> graph = new HashMap<>();
-    static boolean[] used;       // 각 티켓 사용 여부
-    static String[][] tickets;
     static List<String> path = new ArrayList<>();
+    static int total;
 
     public String[] solution(String[][] tickets) {
-        Solution.tickets = tickets;
-        used = new boolean[tickets.length];
-
-        for (String[] ticket : tickets) {
-            graph.putIfAbsent(ticket[0], new ArrayList<>());
-            graph.get(ticket[0]).add(ticket[1]);
+        total = tickets.length;
+        for (String[] t : tickets) {
+            graph.putIfAbsent(t[0], new ArrayList<>());
+            graph.get(t[0]).add(t[1]);
         }
-        
-        for (List<String> dests : graph.values()) {
-            Collections.sort(dests);
-        }
+        for (List<String> v : graph.values()) Collections.sort(v);
 
         path.add("ICN");
         go("ICN");
         return path.toArray(new String[0]);
     }
 
-    private static boolean go(String start) {
-        if (path.size() == tickets.length + 1) return true;
+    static boolean go(String cur) {
+        if (path.size() == total + 1) return true;
 
-        if (!graph.containsKey(start)) return false;
+        List<String> nexts = graph.get(cur);
+        if (nexts == null) return false;
 
-        for (String next : graph.get(start)) {
-            for (int i = 0; i < tickets.length; i++) {
-                if (used[i]) continue;
-                if (!tickets[i][0].equals(start) || !tickets[i][1].equals(next)) continue;
+        for (int i = 0; i < nexts.size(); i++) {
+            String next = nexts.remove(i);   // 티켓 한 장 사용
+            path.add(next);
 
-                used[i] = true;
-                path.add(next);
+            if (go(next)) return true;
 
-                if (go(next)) return true; 
-                
-                used[i] = false;          
-                path.remove(path.size() - 1);
-                break; 
-            }
+            path.remove(path.size() - 1);    // 백트래킹
+            nexts.add(i, next);              // 티켓 도로 넣기
         }
         return false;
     }
