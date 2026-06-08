@@ -1,9 +1,10 @@
-select year(os.sales_date) as year,
-       month(os.sales_date) as month,
-       ui.gender as gender,
-       count(distinct os.user_id) as users
-from online_sale os
-    join user_info ui on os.user_id = ui.user_id
-where ui.gender is not null
-group by year(os.sales_date), month(os.sales_date), ui.gender
-order by year(os.sales_date) asc, month(os.sales_date) asc, ui.gender asc;
+select
+  year(s.sales_date) as year,
+  month(s.sales_date) as month,
+  i.gender,
+  count(distinct s.user_id) as users
+from user_info i
+  join online_sale s on i.user_id = s.user_id
+where i.gender is not null
+group by year(s.sales_date), month(s.sales_date), i.gender
+order by year(s.sales_date) asc, month(s.sales_date) asc, i.gender asc;
