@@ -1,5 +1,7 @@
-select ai.name, count(ai.name) as count
+select
+  ai.name,
+  count(ai.name) as count
 from animal_ins ai
 group by ai.name
-having count(*) > 1 and ai.name is not null
+having count(ai.name) >= 2
 order by ai.name asc;
