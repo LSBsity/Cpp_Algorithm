@@ -1,4 +1,6 @@
-select ai.animal_type, count(*) as count
+select
+  ai.animal_type,
+  count(ai.animal_id) as count
 from animal_ins ai
 where ai.animal_type in ('Cat', 'Dog')
 group by ai.animal_type
