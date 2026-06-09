@@ -1,43 +1,22 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int[] arr) {
-        int answer = arr[0];
+    public int solution(int[] citations) {      
+        Arrays.sort(citations);
         
-        Arrays.sort(arr);
-        System.out.println(Arrays.toString(arr));
+        for (int h = citations.length; h >= 0; h--) {
+            int cnt = 0;
+            
+            for (int j = citations.length - 1; j >= 0; j--) {
+                if (citations[j] >= h) cnt++;
+                else break;
+            }
+            
+            if (h <= cnt) return h;
         
-        int count = 0;
-        while (true) {
-            count++;
-            int checks = 0;
-            boolean flag = false;
-            for (int i = 0; i < arr.length; i++) {
-                if (arr[i] > count) {
-                    checks++;
-                }
-                if (checks > count) {
-                    flag = false;
-                    break;
-                } 
-
-            }   
-            if (checks >= count) {
-                flag = true;
-            } 
-            if (flag) {
-                int checks2 = 0;
-                for (int i = 0; i < arr.length; i++) {
-                    if (arr[i] <= count) checks2++;   
-                }
-                System.out.println(checks2);
-                if (checks2 <= arr.length - checks) answer = count;
-            }
-            if (count > 10000) {
-                break;
-            }
         }
-        return answer;
+        
+        
+        return 0;
     }
 }
-// 5 6 7 8 -> 4
