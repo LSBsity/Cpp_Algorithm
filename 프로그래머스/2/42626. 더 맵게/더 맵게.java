@@ -1,22 +1,28 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int[] scoville, int K) {
+    public int solution(int[] arr, int K) {
         int answer = 0;
-        PriorityQueue<Integer> q = new PriorityQueue<>();
         
-        for (var i : scoville) {
-            q.offer(i);
+        Arrays.sort(arr);
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        
+        for (int food : arr) {
+            pq.offer(food);
         }
         
-        while (q.size() >= 2 && q.peek() < K) {
-            q.offer(q.poll() + q.poll() * 2);
+        if (pq.peek() >= K) return 0;
+        
+        while (pq.size() >= 2) {
+            int first = pq.poll();
+            int second = pq.poll();
+            pq.offer(first + second * 2);
             answer++;
-            if (q.size() < 2 && q.peek() < K) {
-                return -1;
-            }
+            
+            if (pq.peek() >= K) return answer;
         }
         
-        return answer;
+        return -1;
     }
 }
