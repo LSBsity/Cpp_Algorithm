@@ -1,38 +1,16 @@
-with front_end_codes as (
-    select bit_or(c.code) as codes
-    from skillcodes c
-    where c.category = 'Front End'
-), grades as (
-    select (case
-            when d.skill_code & (
-                select codes
-                from front_end_codes
-            ) > 0 and
-                 d.skill_code & (
-                select sub_c.code
-                from skillcodes sub_c
-                where sub_c.name = 'Python'
-            ) > 0 then 'A'
-            when d.skill_code & (
-                select sub_c.code
-                from skillcodes sub_c
-                where sub_c.name = 'C#'
-            ) > 0 then 'B'
-            when d.skill_code & (
-                select codes
-                from front_end_codes
-            ) > 0 then 'C'
-            end) as grade,
-            d.id,
-            d.email
-    from developers d
-)
-
-select 
-    g.grade,
-    g.id,
-    g.email
-from grades g
-where g.grade is not null
-order by grade asc, g.id asc;
-
+SELECT
+  CASE
+    WHEN d.skill_code & (SELECT CODE FROM SKILLCODES WHERE NAME = 'Python') > 0
+         AND d.skill_code & (SELECT SUM(CODE) FROM SKILLCODES WHERE CATEGORY = 'Front End') > 0
+      THEN 'A'
+    WHEN d.skill_code & (SELECT CODE FROM SKILLCODES WHERE NAME = 'C#') > 0
+      THEN 'B'
+    WHEN d.skill_code & (SELECT SUM(CODE) FROM SKILLCODES WHERE CATEGORY = 'Front End') > 0
+      THEN 'C'
+  END AS GRADE,
+  d.ID,
+  d.EMAIL
+FROM DEVELOPERS d
+WHERE d.skill_code & (SELECT SUM(CODE) FROM SKILLCODES WHERE CATEGORY = 'Front End') > 0
+   OR d.skill_code & (SELECT CODE FROM SKILLCODES WHERE NAME = 'C#') > 0
+ORDER BY GRADE ASC, d.ID ASC;
