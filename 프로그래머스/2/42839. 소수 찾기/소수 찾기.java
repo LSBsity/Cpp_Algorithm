@@ -1,40 +1,48 @@
 import java.util.*;
-import java.util.stream.*;
 
 class Solution {
+
+    static boolean[] visited;
+    static Set<Integer> set = new HashSet<>();
     
-    Set<Integer> set = new HashSet<>();
-    
-    public void permute(String numbers, boolean[] visited, String current) {
-        if (!current.isEmpty()) {
-            set.add(Integer.valueOf(current));
-        }
+    public int solution(String numbers) {
+        char[] chars = numbers.toCharArray();
+        visited = new boolean[numbers.length()];
         
-        for (int i = 0; i < numbers.length(); i++) {
-            if (!visited[i]) {
-                visited[i] = true;
-                this.permute(numbers, visited, current + numbers.charAt(i));
-                visited[i] = false;
+        go(chars, "");
+        
+        int cnt = 0;
+        for (Integer i : set) {
+            if (check(i)) {
+                cnt++;
+                System.out.println(i);
             }
         }
+        
+        return cnt;
     }
     
-    public boolean check(int value) {
+    private static boolean check(int value) {
         if (value <= 1) return false;
         
-        for (int i = 2; i <= (int)Math.sqrt(value); i++) {
+        for (int i = 2; i <= Math.sqrt(value); i++) {
             if (value % i == 0) return false;
         }
+        
         return true;
     }
     
-    public int solution(String numbers) {
-        boolean[] visited = new boolean[numbers.length()];
-        this.permute(numbers, visited, "");
-
-        return (int)set.stream()
-            .mapToInt(i -> i)
-            .filter(this::check)
-            .count();
+    private static void go(char[] chars, String current) {
+        if (!current.isEmpty()) {
+            set.add(Integer.parseInt(current));
+        }
+        
+        for (int i = 0; i < chars.length; i++) {
+            if (visited[i]) continue;
+            
+            visited[i] = true;
+            go(chars, current + chars[i]);
+            visited[i] = false;
+        }
     }
 }
