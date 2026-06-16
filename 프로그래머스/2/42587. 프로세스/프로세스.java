@@ -1,44 +1,44 @@
 import java.util.*;
 
 class Solution {
-    
-    static class Element {
-        int value;
-        boolean isTarget;
+    public int solution(int[] priorities, int location) {
+        LinkedList<int[]> q = new LinkedList<>();        
         
-        public Element(int value, boolean isTarget) {
-            this.value = value;
-            this.isTarget = isTarget;
-        }
-    }
-    
-    public int solution(int[] p, int l) {
-        LinkedList<Element> list = new LinkedList<>();
-        
-        for (int i = 0; i < p.length; i++) {
-            list.add(new Element(p[i], l == i));
+        int idx = 0;
+        for (int p : priorities) {
+            q.offer(new int[] {p, idx++});
         }
         
-        int count = 0;
-        while (true) {
-            Element target = list.getFirst();
+        int answer = 1;
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            
+            int process = cur[0];
+            int processIdx = cur[1];
+            
             boolean check = true;
-            for (int i = 1; i < list.size(); i++) {
-                if (list.get(i).value > target.value) {
-                    list.addLast(target);
-                    list.removeFirst();
+            for (int i = 0; i < q.size(); i++) {
+                int next = q.get(i)[0];
+                
+                if (next > process) {
+                    q.offer(cur);
                     check = false;
                     break;
                 }
             }
-            
+             
             if (check) {
-                count++;
-                list.removeFirst();
-                if (target.isTarget) {
-                    return count;
+                if (processIdx == location) {
+                   return answer;
                 }
+                
+                answer++;
             }
+            
+            
         }
+         
+    
+        return -1;
     }
 }
