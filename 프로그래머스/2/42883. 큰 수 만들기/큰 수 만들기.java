@@ -1,27 +1,39 @@
 import java.util.*;
 
 class Solution {
+    
     public String solution(String number, int k) {
-
-        Deque<Integer> stk = new ArrayDeque<>();
-        for (int i = 0; i < number.length(); i++) {
-            int current = number.charAt(i) - '0';
-            while (!stk.isEmpty() && k > 0 && stk.peek() < current) {
-                stk.pop();
-                k--;
-            }
-            stk.push(current);
-        }
-
-        while (k-- > 0) {
-            stk.pop();
-        }
-
         StringBuilder sb = new StringBuilder();
-        for (Integer i: stk) {
-            sb.append(i);
-        }
 
+        char[] chars = number.toCharArray();
+        Deque<Integer> stk = new ArrayDeque<>();
+        
+        stk.push(chars[0] - '0');
+        int cnt = 0;
+        for (int i = 1; i < chars.length; i++) {
+            int val = chars[i] - '0';
+            
+            while (!stk.isEmpty() && stk.peek() < val && cnt < k) {
+                stk.pop();
+                cnt++;
+            }
+            
+            stk.push(val);
+        }       
+        
+        while (cnt < k) {
+            stk.pop();
+            cnt++;
+        }
+        
+        while (!stk.isEmpty()) {
+            sb.append(stk.pop());
+        }
+        
+        
         return sb.reverse().toString();
     }
 }
+/**
+
+**/
