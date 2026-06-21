@@ -1,38 +1,48 @@
 import java.util.*;
+import java.time.*;
 
 class Solution {
-    
-    private int convert(String time) {
-        String[] splited = time.split(":");
-        return 60 * Integer.valueOf(splited[0]) + Integer.valueOf(splited[1]);
-    }
-    
-    
-    public int solution(String[][] times) {
-        List<int[]> list = new ArrayList<>();
-        
-        for (var time : times) {
-            int start = this.convert(time[0]);
-            int end = this.convert(time[1]) + 10;
-            
-            list.add(new int[]{start, 1});
-            list.add(new int[]{end, -1});
-        }
-        
-        list.sort((a, b) -> {
-            if (a[0] == b[0]) {
-                return a[1] - b[1];
-            }
-            return a[0] - b[0];
-        });
-        
-        int currentRooms = 0;
+    public int solution(String[][] book_time) {
         int answer = 0;
         
-        for (var i : list) {
-            currentRooms += i[1];
-            answer = Math.max(currentRooms, answer);
+        LocalTime[][] timeline = new LocalTime[book_time.length][2];
+        for (int i = 0; i < book_time.length; i++) {
+            for (int j = 0; j < 2; j++) {
+                timeline[i][j] = LocalTime.parse(book_time[i][j]);
+            }
         }
+        Arrays.sort(timeline, (a, b) -> a[0].compareTo(b[0]));
+        
+        List<List<LocalTime[]>> hotel = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            hotel.add(new ArrayList<>());
+        }
+        
+        for (int i = 0; i < timeline.length; i++) {
+            LocalTime[] customer = timeline[i];
+            LocalTime customerStartTime = customer[0];
+
+            for (int j = 0; j < hotel.size(); j++) {
+                List<LocalTime[]> room = hotel.get(j);
+                
+                if (room.size() == 0) {
+                    room.add(customer);
+                    answer++;
+                    break;
+                }
+                
+                LocalTime[] lastReservation = room.get(room.size() - 1);
+                LocalTime endTime = lastReservation[1].isAfter(LocalTime.of(23, 49))
+                                        ? LocalTime.MAX
+                                        : lastReservation[1].plusMinutes(10);
+                
+                if (!endTime.isAfter(customerStartTime)) {
+                    room.add(customer);
+                    break;
+                } 
+            }
+        }
+        
         
         return answer;
     }
