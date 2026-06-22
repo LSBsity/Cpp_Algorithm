@@ -1,3 +1,4 @@
-select count(ui.user_id) as USERS
-from user_info ui
-where ui.age is null;
+select
+  count(*)
+from user_info i
+where i.age is null
