@@ -1,34 +1,21 @@
 import java.util.*;
 
 class Solution {
-    
     public int[] solution(int[] numbers) {
         int[] answer = new int[numbers.length];
-        Deque<Element> q = new ArrayDeque<>();
+        Arrays.fill(answer, -1);
         
-        for (int i = 0; i < numbers.length; i++) {
-            while (!q.isEmpty() && numbers[i] > q.peek().value) {
-                   answer[q.peek().pos] = numbers[i];
-                   q.pop();
+        Deque<Integer> stk = new ArrayDeque<>();
+        stk.push(0);
+        
+        for (int i = 1; i < numbers.length; i++) {
+            while (!stk.isEmpty() && numbers[stk.peek()] < numbers[i]) {
+                int idx = stk.pop();
+                answer[idx] = numbers[i];
             }
-            q.push(new Element(numbers[i], i));
+            stk.push(i);
         }
-        
-        while (!q.isEmpty()) {
-            answer[q.peek().pos] = -1;
-            q.pop();
-        }
-
+    
         return answer;
-    }
-       
-    static class Element {
-        int value;
-        int pos;
-        
-        public Element(int value, int pos) {
-            this.value = value;
-            this.pos = pos;
-        }
     }
 }
