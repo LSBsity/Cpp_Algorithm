@@ -1,29 +1,30 @@
+import java.util.*;
+
 class Solution {
-    
-    int[] answer = {0, 0};
-    
-    private int go(int[][] arr, int row, int col, int size) {
-        if (size == 1) {
-            answer[arr[row][col]]++;
-            return arr[row][col];
-        }
-        
-        int half = size / 2;
-        int a = this.go(arr, row, col, size / 2);
-        int b = this.go(arr, row, col + half, size / 2);
-        int c = this.go(arr, row + half, col, size / 2);
-        int d = this.go(arr, row + half, col + half, size / 2);
-        
-        if (a == b & b == c & c == d && a != -1) {
-            answer[a] -= 3;
-            return a;
-        }
-    
-        return -1;
-    }
+
+    static int[] answer = {0, 0};
     
     public int[] solution(int[][] arr) {
-        this.go(arr, 0, 0, arr.length);
+        go(arr, 0, 0, arr.length);
         return answer;
+    }
+    
+    private int go(int[][] arr, int x, int y, int size) {
+        if (size == 1) {
+            answer[arr[x][y]]++;
+            return arr[x][y];
+        }
+        
+        int a = go(arr, x, y, size / 2);
+        int b = go(arr, x + size / 2, y, size / 2);
+        int c = go(arr, x, y + size / 2, size / 2);
+        int d = go(arr, x + size / 2, y + size / 2, size / 2);    
+
+        if (a == b && b == c && c == d && a != -1) {
+            answer[arr[x][y]] -= 3;
+            return a;
+        }
+        
+        return -1;
     }
 }
