@@ -1,11 +1,14 @@
-select flavor 
-from (
-    select sum(fh.total_order) + sum(j.total_order) as sum,
-       fh.flavor
-    from first_half fh
-        join july j on fh.flavor = j.flavor
-    group by fh.flavor
-    order by sum desc
-    limit 3
-) as result;
-
+select
+  h.flavor
+from first_half h
+join (
+  select
+    j.flavor,
+    sum(j.total_order) total_sum
+  from july j
+  group by j.flavor
+) s on h.flavor = s.flavor
+group by h.flavor
+order by sum(h.total_order) + s.total_sum desc
+limit 3;
+  
