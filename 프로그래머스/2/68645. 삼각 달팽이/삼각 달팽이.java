@@ -1,42 +1,43 @@
+import java.util.*;
+
 class Solution {
+    
+    static int[] dx = {1, 0, -1};
+    static int[] dy = {0, 1, -1};
+    
     public int[] solution(int n) {
-        int[][] arr = new int[n + 1][n + 1];
-
-        int i = 0, j = 0, cnt = 1;
-        int N = n;
-        while (N > 0) {
-            for (int k = 0; k < N; k++) {
-                arr[i++][j] = cnt++;
+        int[][] map = new int[n][n];
+        
+        int maxSize = (n + 1) * n / 2;
+        int[] answer = new int[maxSize];
+        
+        int x = 0, y = 0, dir = 0, cnt = 2;
+        map[0][0] = 1;
+        
+        while (cnt <= maxSize) {
+            int nx = x + dx[dir];
+            int ny = y + dy[dir];
+            
+            if (nx < 0 || ny < 0 || nx >= n || ny >= n) {
+                dir = (dir + 1) % 3;
+                continue;
             }
-            N--;
-
-            i--;
-            j++;
-            for (int k = 0; k < N; k++) {
-                arr[i][j++] = cnt++;
+            if (map[nx][ny] != 0) {
+                dir = (dir + 1) % 3;
+                continue;
             }
-            N--;
-
-            j -= 2;
-            i--;
-            for (int k = 0; k < N; k++) {
-                arr[i--][j--] = cnt++;
-            }
-            N--;
-
-            i += 2;
-            j++;
+            
+            map[nx][ny] = cnt++;
+            x = nx;
+            y = ny;
         }
-
-        int[] answer = new int[cnt - 1];
-        int idx = 0;
-        for (i = 0; i < n; i++) {
-            for (j = 0; j < i + 1; j++) {
-                answer[idx++] = arr[i][j];
+        
+        for (int i = 0, idx = 0; i < n; i++) {
+            for (int j = 0; j < i + 1; j++) {
+                answer[idx++] = map[i][j];
             }
-            System.out.println();
         }
-
+        
         return answer;
     }
 }
