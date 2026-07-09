@@ -1,25 +1,36 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int[] arr) {
-        int answer = 0;
+    public int solution(int[] topping) {
+        int answer = -1;
         
         Map<Integer, Integer> map = new HashMap<>();
         Set<Integer> set = new HashSet<>();
         
-        for (var i : arr) {
-            map.put(i, map.getOrDefault(i, 0) + 1);
+        for (int t : topping) {
+            map.put(t, map.getOrDefault(t, 0) + 1);
         }
-        
-        for (var i : arr) {
-            set.add(i);
-            map.put(i, map.get(i) - 1);
+
+        for (int i = 0; i < topping.length - 1; i++) {
+            int t = topping[i];
             
-            if (map.get(i) == 0) map.remove(i);
-            if (set.size() == map.size()) answer++;
+            int cnt = map.get(t);
+            
+            if (cnt > 0) {
+                set.add(t);
+                if (cnt - 1 == 0) {
+                    map.remove(t);
+                } else {
+                    map.put(t, map.get(t) - 1);
+                }
+            }
+            
+            int myCnt = map.size();
+            int broCnt = set.size();
+            
+            if (myCnt == broCnt) answer++;
         }
         
-        
-        return answer;
+        return answer + 1;
     }
 }
