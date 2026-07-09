@@ -1,16 +1,12 @@
-with FrontCode as (
-    select bit_or(c.code) as codes
-    from skillcodes c
-    where c.category = 'Front End'
-)
-
-select d.id,
-       d.email,
-       d.first_name,
-       d.last_name
+select
+  d.id,
+  d.email,
+  d.first_name,
+  d.last_name
 from developers d
 where d.skill_code & (
-    select c.codes
-    from frontcode c
+    select sum(s.code)
+    from skillcodes s
+    where s.category = 'Front End'
 )
-order by d.id asc;
+order by d.id;
