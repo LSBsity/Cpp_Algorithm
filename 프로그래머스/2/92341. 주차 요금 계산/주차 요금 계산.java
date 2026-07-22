@@ -1,63 +1,51 @@
-
-import java.time.Duration;
-import java.time.LocalTime;
 import java.util.*;
 
 class Solution {
-
     public int[] solution(int[] fees, String[] records) {
-        records = Arrays.stream(records).sorted(
-                        (o1, o2) -> {
-                            int i1 = Integer.parseInt(o1.substring(6, 10));
-                            int i2 = Integer.parseInt(o2.substring(6, 10));
-                            if (i1 < i2) {
-                                return -1;
-                            } else if (i1 > i2) {
-                                return 1;
-                            } else {
-                                return 0;
-                            }
-                        })
-                .toArray(String[]::new);
-
-        Map<String, Long> map = new TreeMap<>();
-
-        for (int i = 0; i < records.length; i++) {
-            String record = records[i];
-            String carNumber = this.getNumber(record);
-            if (this.isIn(record)) {
-                LocalTime outTime;
-                if (i + 1 < records.length) {
-                    outTime = carNumber.equals(this.getNumber(records[i + 1])) ? this.getTime(records[i + 1]) : LocalTime.of(23, 59, 0);
-                } else {
-                    outTime = LocalTime.of(23, 59, 0);
-                }
-                LocalTime inTime = this.getTime(record);
-                Duration duration = Duration.between(inTime, outTime);
-                map.put(carNumber, map.getOrDefault(carNumber, 0L) + duration.toMinutes());
+        Map<String, Integer> map = new HashMap<>();
+        Map<String, Integer> feeMap = new TreeMap<>();
+        
+        for (String record : records) {
+            String[] split = record.split(" ");
+        
+            int converted = convert(split[0]);
+            
+            if (split[2].equals("IN")) {
+                map.put(split[1], converted);
+            } else {
+                int inTime = map.get(split[1]);
+                int outTime = convert(split[0]);
+            
+                feeMap.put(split[1], feeMap.getOrDefault(split[1], 0) + outTime - inTime);
+                map.remove(split[1]);
             }
-
+            
         }
-        int[] answer = new int[map.size()];
+        
+        for (String no : map.keySet()) {
+            int outTime = convert("23:59");
+            int inTime = map.get(no);
+            
+            feeMap.put(no, feeMap.getOrDefault(no, 0) + outTime - inTime);
+        }
+        
+        int[] answer = new int[feeMap.size()];
+            
         int idx = 0;
-        for (Long value : map.values()) {
-            int price = value > fees[0] ? fees[1] + (int) Math.ceil((double) (value - fees[0]) / fees[2]) * fees[3] : fees[1];
-            answer[idx++] = price;
+        for (Integer time : feeMap.values()) {
+            if (time <= fees[0]) {
+                answer[idx++] = fees[1];
+            } else {
+                int val = fees[1] + (int) Math.ceil((double)(time - fees[0]) / fees[2]) * fees[3];
+                answer[idx++] = val;
+            }
         }
-
+        
         return answer;
     }
-
-    private String getNumber(String str) {
-        return str.substring(6, 10);
+    
+    public int convert(String time) {
+        String[] split = time.split(":");
+        return Integer.parseInt(split[0]) * 60 + Integer.parseInt(split[1]);
     }
-
-    private LocalTime getTime(String str) {
-        return LocalTime.of(Integer.parseInt(str.substring(0, 2)), Integer.parseInt(str.substring(3, 5)), 0);
-    }
-
-    private boolean isIn(String str) {
-        return str.endsWith("IN");
-    }
-
 }
