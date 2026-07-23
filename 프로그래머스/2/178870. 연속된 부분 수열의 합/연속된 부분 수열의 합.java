@@ -1,21 +1,35 @@
 class Solution {
-
-    public int[] solution(int[] arr, int target) {
-        int sum = 0, first = 0, last = Integer.MAX_VALUE;
-    
-        for (int start = 0, end = 0; end < arr.length; end++) {
-            sum += arr[end]; // right pointer++
-            
-            while (sum > target && start <= end) {
-                sum -= arr[start++]; // left pointer++
-            }
-            
-            if (sum == target && last - first > end - start) {
-                first = start;
-                last = end;
+    public int[] solution(int[] arr, int k) {
+        int[] temp = {0, 0};
+        int min = Integer.MAX_VALUE;
+        
+        int left = 0;
+        int right = 1;
+        int sum = arr[0];
+        
+        if (sum == k) {
+            return new int[] {0, 0};
+        }
+        
+        while (left < right) {
+            if (sum < k && right < arr.length) {
+                sum += arr[right++];    
+            } else if (sum > k) {
+                sum -= arr[left++];
+            }  else {
+                if (sum == k && min > right - 1 - left) {
+                    temp[0] = left;
+                    temp[1] = right - 1;
+                    min = right - 1 - left;
+                }
+                sum -= arr[left++];
             }
         }
         
-        return new int[]{first, last};
+        if (arr[arr.length - 1] == k) {
+            return new int[] {arr.length - 1, arr.length - 1};
+        }
+        
+        return temp;
     }
 }
