@@ -1,21 +1,36 @@
+import java.util.*;
+
 class Solution {
     public String solution(int n, int t, int m, int p) {
         StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i <= t * m; i++) {
-            sb.append(Integer.toString(i, n));
-        }
-
+        
+         for (int i = 0; i <= t * m; i++) {
+             sb.append(Integer.toString(i, n));
+         }
+        
         StringBuilder answer = new StringBuilder();
-        for (int i = p - 1, idx = 0; idx < t && i < sb.length(); i += m, idx++) {
-            char c = sb.charAt(i);
-            if (Character.isAlphabetic(c)) {
-                answer.append(Character.toUpperCase(c));
-            } else {
-                answer.append(c);
-            }
-        }
+        char[] chars = sb.toString().toCharArray();
 
+        
+        if (Character.isDigit(chars[p - 1])) {
+            answer.append(chars[p - 1]);
+        } else {
+            answer.append(Character.toUpperCase(chars[p - 1]));
+        }
+        
+        for (int i = p; i < chars.length; i++) {
+            
+            if (i % m == p - 1) {
+                if (Character.isDigit(chars[i])) {
+                    answer.append(chars[i]);
+                } else {
+                    answer.append(Character.toUpperCase(chars[i]));
+                }
+            }
+            
+            if (answer.length() == t) break;
+        }
+        
         return answer.toString();
     }
 }
