@@ -1,27 +1,27 @@
+import java.util.*;
+
 class Solution {
     public int solution(int n, int k) {
-        int count = 0;
-
-        for (String s : Integer.toString(n, k).split("0")) {
-            if (s.isEmpty()) continue;
-            count = this.check(s) ? count + 1 : count;
+        int answer = 0;
+        
+        String[] result = Integer.toString(n, k).split("0");
+        
+        for (String str : result) {
+            if (str.equals("")) continue;
+            
+            if (isPrime(Long.parseLong(str))) answer++;
         }
-
-        return count;
+        
+        return answer;
     }
-
-    private boolean check(String str) {
-        if (str == null || str.isEmpty()) return false;
-
-        long value = Long.parseLong(str);
-        if (value == 1) return false;
-        if (value == 2) return true;
-
-        for (int i = 2; i <= Math.sqrt((double) value); i++) {
-            if (value % i == 0) {
-                return false;
-            }
+    
+    private boolean isPrime(long n) {
+        if (n < 2) return false;
+        
+        for (int i = 3; i <= Math.sqrt(n); i++) {
+            if (n % i == 0) return false;
         }
+        
         return true;
     }
 }
