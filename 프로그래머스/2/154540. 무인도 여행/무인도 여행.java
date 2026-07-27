@@ -1,53 +1,61 @@
 import java.util.*;
+import java.util.stream.*;
 
 class Solution {
     
-    boolean[][] visited;
-    int[][] map;
-    List<Integer> answer = new ArrayList<>();
-    int sum = 0;
+    static char[][] map;
+    static boolean[][] visited;
     
-    int[] dx = {-1, 0, 1, 0};
-    int[] dy = {0, 1, 0, -1};
-     
-    private void go(int i, int j) {
-        if (visited[i][j]) return;
-        
-        visited[i][j] = true;
-        sum += map[i][j];
-        
-        for (int k = 0; k < 4; k++) {
-            int nx = i + dx[k];
-            int ny = j + dy[k];
-            if (nx < 0 || ny < 0 || nx >= map.length || ny >= map[0].length || map[nx][ny] == -1 || visited[nx][ny]) continue;
-            this.go(nx, ny);
-        }
-    }
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
     
     public int[] solution(String[] maps) {
-        map = new int[maps.length][maps[0].length()];
+        map = new char[maps.length][maps[0].length()];
         visited = new boolean[maps.length][maps[0].length()];
         
-        for (int i = 0; i < maps.length; i++) {
-            char[] chars = maps[i].toCharArray();
-            for (int j = 0; j < maps[i].length(); j++) {
-                map[i][j] = chars[j] == 'X' ? -1 : chars[j] - '0'; 
-            }
+        int idx = 0;
+        for (String str : maps) {
+            map[idx++] = str.toCharArray();
         }
-
+        
+        List<Integer> answer = new ArrayList<>();
         for (int i = 0; i < maps.length; i++) {
-            for (int j = 0; j < maps[i].length(); j++) {
-                if (map[i][j] != -1 && !visited[i][j]) {
-                    this.go(i, j);
-                    answer.add(sum);
-                    sum = 0;
+            for (int j = 0; j < maps[0].length(); j++) {
+                if (map[i][j] != 'X' && !visited[i][j]) {
+                    answer.add(go(i, j));
                 }
             }
         }
         
-        Collections.sort(answer);
-        if (answer.size() == 0) return new int[]{-1};
+        if (answer.size() == 0) return new int[] {-1};
         
-        return answer.stream().mapToInt(i -> i).toArray();
+        return answer.stream().sorted().mapToInt(i -> i).toArray();
+    }
+    
+    private int go(int x, int y) {
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[] {x, y});
+        
+        visited[x][y] = true;
+        
+        int sum = map[x][y] - '0';
+        while(!q.isEmpty()) {
+            int[] cur = q.poll();
+            
+            for (int i = 0; i < 4; i++) {
+                int nx = cur[0] + dx[i];
+                int ny = cur[1] + dy[i];
+                
+                if (nx < 0 || ny < 0 || nx >= map.length || ny >= map[0].length) continue;
+                if (map[nx][ny] == 'X') continue;
+                if (visited[nx][ny]) continue;
+                
+                sum += map[nx][ny] - '0';
+                visited[nx][ny] = true;
+                q.offer(new int[] {nx, ny});
+            }
+        }
+        
+        return sum;
     }
 }
