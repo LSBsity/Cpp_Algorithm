@@ -1,14 +1,16 @@
-select ap.apnt_no,
-       p.pt_name,
-       p.pt_no,
-       ap.mcdp_cd,
-       d.dr_name,
-       ap.apnt_ymd
+select
+  ap.apnt_no,
+  p.pt_name,
+  ap.pt_no,
+  d.mcdp_cd,
+  d.dr_name,
+  ap.apnt_ymd
 from appointment ap
-    join patient p on ap.pt_no = p.pt_no
-    join doctor d on ap.mddr_id = d.dr_id
-where year(ap.apnt_ymd) = 2022 and
-      month(ap.apnt_ymd) = 4 and
-      day(ap.apnt_ymd) = 13 and
-      apnt_cncl_yn = 'N'
+join patient p on p.pt_no = ap.pt_no
+join doctor d on d.dr_id = ap.mddr_id
+where d.mcdp_cd = 'CS' and
+  year(ap.apnt_ymd) = 2022 and
+  month(ap.apnt_ymd) = 4 and
+  day(ap.apnt_ymd) = 13 and
+  ap.apnt_cncl_ymd is null
 order by ap.apnt_ymd asc;
