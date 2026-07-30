@@ -1,45 +1,58 @@
+import java.util.*;
+
 class Solution {
     
-    private void unionParent(int[] parent, int a, int b) {
-        a = findParent(parent, a);
-        b = findParent(parent, b);
-        if (a > b) parent[a] = b;
-        else parent[b] = a;
-    }
-    
-    private int findParent(int[] parent, int x) {
-        if (parent[x] == x) return x;
-        return parent[x] = findParent(parent, parent[x]);
-    }
-    
-    private int getGroupSize(int[] parent, int x) {
-        int count = 0;
-        for (int i = 1; i < parent.length; i++) {
-            if (findParent(parent, i) == x) {
-                count++;
-            }
-        }
-        return count;
-    }
+    static int[] parents;
     
     public int solution(int n, int[][] wires) {
         int answer = Integer.MAX_VALUE;
-        for (int i = 0; i < n; i++) {
-            int[] parent = new int[n + 1];
-            for (int j = 1; j <= n; j++) {
-                parent[j] = j;
-            }    
+        Map<Integer, Integer> map = new HashMap<>();       
+        
+        for (int i = 0; i < wires.length; i++) {
+            
+            parents = new int[n + 1];
+            for (int k = 1; k <= n; k++) parents[k] = k;
+            
             for (int j = 0; j < wires.length; j++) {
                 if (i == j) continue;
-                unionParent(parent, wires[j][0], wires[j][1]);
+                
+                int[] cur = wires[j];
+                union(cur[0], cur[1]);
             }
             
-            int rootSize = getGroupSize(parent, 1);
-            int remain = n - rootSize;
-            int diff = Math.abs(remain - rootSize);
+            for (int j = 1; j <= n; j++) {
+                int root = find(j);
+                map.put(root, map.getOrDefault(root, 0) + 1);
+            }
+            
+            int diff = 0;
+            for (int value : map.values()) {
+                diff = Math.abs(diff - value);
+            }
+            
             answer = Math.min(answer, diff);
+            map.clear();
         }
         
         return answer;
+    }
+    
+    private void union(int x, int y) {
+        int findX = find(x);
+        int findY = find(y);
+        
+        if (findX == findY) return;    
+        if (findX < findY) {
+            parents[findY] = findX;
+            return;
+        } 
+    
+        parents[findX] = findY;
+    }
+    
+    private int find(int x) {
+        if (parents[x] == x) return x;
+        
+        return parents[x] = find(parents[x]);
     }
 }
