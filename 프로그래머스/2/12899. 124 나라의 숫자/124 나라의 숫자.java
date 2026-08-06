@@ -1,19 +1,12 @@
 class Solution {
+    
     public String solution(int n) {
+        String[] d = {"4", "1", "2"};
         StringBuilder sb = new StringBuilder();
-        
         while (n > 0) {
-            int rem = n % 3;
-            n /= 3;
-            
-            if (rem == 0) {
-                sb.append(4);
-                n--; 
-            } else {
-                sb.append(rem);
-            }
+            sb.insert(0, d[n % 3]);
+            n = (n - 1) / 3;
         }
-        
-        return sb.reverse().toString();
+        return sb.toString();
     }
 }
