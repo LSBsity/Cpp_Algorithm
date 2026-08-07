@@ -1,53 +1,38 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 class Solution {
+    
+    static Map<String, Integer> map1 = new HashMap<>();
+    static Map<String, Integer> map2 = new HashMap<>();
+    
     public int solution(String str1, String str2) {
-        List<String> list1 = go(str1);
-        List<String> list2 = go(str2);
-
-        list1.sort(String::compareTo);
-        list2.sort(String::compareTo);
-
-        List<String> list2Temp = new ArrayList<>(List.copyOf(list2));
-        List<String> union = new ArrayList<>(List.copyOf(list2));
-        List<String> intersection = new ArrayList<>();
-
-        for (String str : list1) {
-            if (list2.contains(str)) {
-                list2.remove(str);
-                intersection.add(str);
-            }
-            if (!list2Temp.contains(str)) {
-                union.add(str);
-            } else {
-                list2Temp.remove(str);
+        int answer = 0;
+        
+        String strA = str1.toUpperCase();
+        String strB = str2.toUpperCase();
+        
+        for (int i = 1; i < strA.length(); i++) {
+            String str = strA.substring(i - 1, i + 1);
+            if (Character.isLetter(str.charAt(0)) && Character.isLetter(str.charAt(1))) {
+                map1.put(str, map1.getOrDefault(str, 0) + 1);    
             }
         }
-
-        if (union.isEmpty()) return 65536;
-        return (int) (((double) intersection.size() / union.size()) * 65536);
-
-    }
-
-    private List<String> go(String str) {
-        List<String> list = new ArrayList<>();
-
-        String converted = str.toLowerCase();
-        for (int i = 0; i < converted.length() - 1; i++) {
-            String subs = converted.substring(i, i + 2);
-            boolean check = false;
-            for (char c : subs.toCharArray()) {
-                if (!Character.isAlphabetic(c)) {
-                    check = true;
-                    break;
-                }
-
-            }
-            if (!check) {
-                list.add(subs);
+        for (int i = 1; i < strB.length(); i++) {
+            String str = strB.substring(i - 1, i + 1);
+            if (Character.isLetter(str.charAt(0)) && Character.isLetter(str.charAt(1))) {
+                map2.put(str, map2.getOrDefault(str, 0) + 1);    
             }
         }
-        return list;
+        
+        int total1 = map1.values().stream().mapToInt(Integer::intValue).sum();
+        int total2 = map2.values().stream().mapToInt(Integer::intValue).sum();
+
+        int inter = 0;
+        for (Map.Entry<String, Integer> entry : map1.entrySet()) {
+            inter += Math.min(entry.getValue(), map2.getOrDefault(entry.getKey(), 0));
+        }
+        
+        int union = total1 + total2 - inter;
+        return union == 0 ? 65536 : (int) ((long) inter * 65536 / union);
     }
 }
