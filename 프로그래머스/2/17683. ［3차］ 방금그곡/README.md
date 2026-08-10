@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 78 MB, 시간: 17.89 ms
+메모리: 89.8 MB, 시간: 8.95 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2025년 06월 24일 11:58:47
+2026년 08월 10일 17:16:22
 
 ### 문제 설명
 
@@ -83,6 +83,7 @@
 
 <p><a href="http://tech.kakao.com/2017/11/14/kakao-blind-recruitment-round-3/" target="_blank" rel="noopener">해설 보러가기</a></p>
 
+<p><br></p>
 
 <hr>
 

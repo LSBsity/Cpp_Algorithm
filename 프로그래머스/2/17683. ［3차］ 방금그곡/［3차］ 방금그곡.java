@@ -1,48 +1,50 @@
-import java.util.*;
-import java.time.*;
-import java.time.format.*;
-
 class Solution {
     
-    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm");
-    
-    private String convert(String before) {
-        return before.replaceAll("C#", "c")
-            .replaceAll("D#", "d")
-            .replaceAll("F#", "f")
-            .replaceAll("G#", "g")
-            .replaceAll("A#", "a")
-            .replaceAll("B#", "b");
-    }
+    static String[] strs = {"C#", "D#", "F#", "G#", "A#"};
     
     public String solution(String m, String[] musicinfos) {
         String answer = "(None)";
-        long maxPlaytime = -1;
+        int maxLen = Integer.MIN_VALUE;
         
-        String target = this.convert(m);
-        
-        for (String line : musicinfos) {
-            String[] parsed = line.split(",");
+        m = convert(m);
+        for (String info : musicinfos) {
+            String[] split = info.split(",");
             
-            LocalTime startTime = LocalTime.parse(parsed[0], fmt);
-            LocalTime endTime = LocalTime.parse(parsed[1], fmt);
-            long minutes = Duration.between(startTime, endTime).toMinutes();
+            String converted = convert(split[3]);
             
-            String codes = this.convert(parsed[3]);
-            int length = codes.length();
+            int start = getMinutes(split[0]);
+            int end = getMinutes(split[1]);
             
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < minutes; i++) {
-                sb.append(codes.charAt(i % length));
-            }
+            int playtime = end - start;
+            String fullcode = getFullcode(playtime, converted);
             
-            String codeLine = sb.toString();
-            if (codeLine.contains(target) && maxPlaytime < minutes) {
-                answer = parsed[2];
-                maxPlaytime = minutes;
+            if (fullcode.contains(m) && playtime > maxLen) {
+                answer = split[2];
+                maxLen = end - start;
             }
         }
         
         return answer;
+    }
+    
+    private String getFullcode(int minutes, String fullcode) {
+        StringBuilder sb = new StringBuilder();
+        int len = fullcode.length();
+        
+        for (int i = 0, idx = 0; i < minutes; i++) {
+            sb.append(fullcode.charAt(idx));
+            idx = (idx + 1) % len;
+        }
+        return sb.toString();
+    }
+    
+    private int getMinutes(String str) {
+        String[] split = str.split(":");
+        return Integer.parseInt(split[0]) * 60 + Integer.parseInt(split[1]);
+    }
+    
+    private String convert(String code) {
+        for (String s : strs) code = code.replaceAll(s, s.substring(0, 1).toLowerCase());
+        return code;
     }
 }
