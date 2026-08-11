@@ -1,62 +1,51 @@
 import java.util.*;
- 
+
 class Solution {
-    
-    private void go(char[] chars, List<Character> list, int depth, int start, Set<String> result) {
-        if (list.size() == depth) {
-            List<Character> temp = new ArrayList<>(list);
-            StringBuilder sb = new StringBuilder();
-            for (var c : temp) {
-                sb.append(c);
+
+    private Map<String, Integer> map = new HashMap<>();
+
+    public String[] solution(String[] orders, int[] courses) {
+        for (String order : orders) {
+            char[] arr = order.toCharArray();
+            Arrays.sort(arr);
+
+            for (int course : courses) {
+                if (arr.length < course) continue;
+                comb(arr, new char[course], 0, 0, course);
             }
-            result.add(sb.toString());
+        }
+
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+        list.sort(Comparator
+                .comparingInt((Map.Entry<String, Integer> e) -> e.getKey().length())
+                .thenComparing(Map.Entry::getValue, Comparator.reverseOrder()));
+
+        List<String> answer = new ArrayList<>();
+        int curLen = -1, curMax = 0;
+
+        for (Map.Entry<String, Integer> e : list) {
+            int len = e.getKey().length();
+            if (len != curLen) {        
+                curLen = len;
+                curMax = e.getValue();
+            }
+            if (curMax >= 2 && e.getValue() == curMax) {
+                answer.add(e.getKey());
+            }
+        }
+
+        Collections.sort(answer);
+        return answer.toArray(new String[0]);
+    }
+
+    private void comb(char[] arr, char[] out, int start, int depth, int r) {
+        if (depth == r) {
+            map.put(String.valueOf(out), map.getOrDefault(String.valueOf(out), 0) + 1);
             return;
         }
-        
-        for (int i = start; i < chars.length; i++) {
-            list.add(chars[i]);
-            this.go(chars, list, depth, i + 1, result);
-            list.remove(list.size() - 1);
+        for (int i = start; i < arr.length; i++) {
+            out[depth] = arr[i];
+            comb(arr, out, i + 1, depth + 1, r);
         }
-    }
-    
-    public String[] solution(String[] orders, int[] course) {
-        Map<String, Integer> map = new HashMap<>();
-        
-        for (var order : orders) {
-            char[] chars = order.toCharArray();
-            Arrays.sort(chars);           
-            for (var len : course) {
-                Set<String> result = new HashSet<>();
-                this.go(chars, new ArrayList<>(), len, 0, result);
-                
-                for (var str : result) {
-                    map.put(str, map.getOrDefault(str, 0) + 1);
-                }
-            }
-        }
-        List<String> list = new ArrayList<>();
-        for (var len : course) {
-            List<String> candidates = new ArrayList<>();
-            int max = 2;
-            
-            for (var entry : map.entrySet()) {
-                if (entry.getKey().length() == len) {
-                    if (entry.getValue() > max) {
-                        candidates.clear();
-                        candidates.add(entry.getKey());
-                        max = entry.getValue();
-                    } else if (entry.getValue() == max) {
-                        candidates.add(entry.getKey());
-                    }
-                }
-            }
-            
-            list.addAll(candidates);
-        }        
-        
-        Collections.sort(list);
-
-        return list.toArray(new String[0]);
     }
 }
