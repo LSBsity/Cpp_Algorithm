@@ -1,0 +1,32 @@
+class Solution {
+    private static int[] board;
+    private static int answer;
+
+    public static int solution(int n) {
+        board = new int[n];
+
+        go(0, n);
+        return answer;
+    }
+
+    private static void go(int depth, int n) {
+        if (depth == n) {
+            answer++;
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            board[depth] = i;
+            if (check(depth)) {
+                go(depth + 1, n);
+            }
+        }
+    }
+
+    private static boolean check(int i) {
+        for (int j = 0; j < i; j++) {
+            if (board[i] == board[j]) return false;
+            if (Math.abs(i - j) == Math.abs(board[i] - board[j])) return false;
+        }
+        return true;
+    }
+}
