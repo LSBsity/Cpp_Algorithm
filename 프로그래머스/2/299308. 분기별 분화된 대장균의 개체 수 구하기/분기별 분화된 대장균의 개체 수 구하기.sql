@@ -1,5 +1,6 @@
-select concat(quarter(d.DIFFERENTIATION_DATE), 'Q') as quarter,
-       count(d.id) as ecoli_count
-from ecoli_data d
-group by concat(quarter(d.DIFFERENTIATION_DATE), 'Q')
+select
+  concat(quarter(ed.differentiation_date), 'Q') as quarter,
+  count(ed.id)
+from ecoli_data ed
+group by quarter(ed.differentiation_date)
 order by quarter asc;
