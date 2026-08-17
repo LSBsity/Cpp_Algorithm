@@ -1,12 +1,13 @@
-select p.id,
-       p.name,
-       p.host_id
-from places p
-where p.host_id in (
-    select sub_p.host_id
-    from places sub_p
-    group by host_id
-    having count(*) >= 2
+select
+  p1.id,
+  p1.name,
+  p1.host_id
+from places p1
+where p1.host_id in (
+  select p2.host_id
+  from places p2
+  group by p2.host_id
+  having count(p2.host_id) >= 2
 )
-group by p.id
-order by p.id asc;
+order by p1.id asc;
+
