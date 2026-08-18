@@ -1,10 +1,6 @@
-select p.cart_id
-from cart_products p
-where p.cart_id in (
-    select sub_p.cart_id
-    from cart_products sub_p
-    where sub_p.name in ('Milk', 'Yogurt')
-    group by sub_p.cart_id
-    having count(distinct sub_p.name) = 2
-)
-group by p.cart_id
+select
+  distinct cp.cart_id
+from cart_products cp
+where
+  exists (select 1 from cart_products p where cp.cart_id = p.cart_id and p.name = 'Milk') and
+  exists (select 1 from cart_products p where cp.cart_id = p.cart_id and p.name = 'Yogurt')
