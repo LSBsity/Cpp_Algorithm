@@ -1,12 +1,12 @@
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 
 class Solution {
     public String[] solution(String[] strings, int n) {
-        Arrays.sort(strings,
-                Comparator.comparing((String str) -> str.charAt(n))
-                        .thenComparing(str -> str)
-        );
+        Arrays.sort(strings, (a, b) -> {
+            if (a.charAt(n) == b.charAt(n)) return a.compareTo(b);
+            return Integer.compare(a.charAt(n), b.charAt(n));
+        });
+        
         return strings;
     }
 }
