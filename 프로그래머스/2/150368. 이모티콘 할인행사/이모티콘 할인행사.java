@@ -3,55 +3,58 @@ import java.util.*;
 class Solution {
     
     static final int[] RATES = {10, 20, 30, 40};
-
+    
+    static int bestJoin = -1;
+    static int bestSales = -1;
+    
+    static int[][] users;
+    static int[] emoticons;
+    
     public int[] solution(int[][] users, int[] emoticons) {
         int[] answer = {-1, -1};
-         
-        for (int[] combo : combinations(emoticons.length)) {
-            int joinCount = 0;
-            int sales = 0;
-            
-            for (int[] user : users) {
-                int wantRate = user[0];
-                int maxPrice = user[1];
-
-                int total = 0;
-                for (int i = 0; i < emoticons.length; i++) {
-                    if (combo[i] < wantRate) continue;
-                    total += emoticons[i] * (100 - combo[i]) / 100;
-                }
-                
-                if (total >= maxPrice) {
-                    joinCount++;
-                } else {
-                    sales += total;
-                }
-            }
-            
-            if (joinCount > answer[0] || (joinCount == answer[0] && sales > answer[1])) {
-                answer[0] = joinCount;
-                answer[1] = sales;
-            }
-        }
+        this.users = users;
+        this.emoticons = emoticons;
         
-        return answer;
+        go(emoticons.length, 0, new int[emoticons.length]);
+        
+        return new int[] {bestJoin, bestSales};
     }
- 
-    public static List<int[]> combinations(int productCount) {
-        List<int[]> result = new ArrayList<>();
-        dfs(productCount, 0, new int[productCount], result);
-        return result;
-    }
-
-    private static void dfs(int n, int depth, int[] picked, List<int[]> result) {
+    
+    private void go(int n, int depth, int[] combi) {
         if (depth == n) {
-            result.add(picked.clone());
+            calculate(combi);
             return;
         }
-        
+
         for (int rate : RATES) {
-            picked[depth] = rate;
-            dfs(n, depth + 1, picked, result);
+            combi[depth] = rate;
+            go(n, depth + 1, combi);
+        }
+    }
+    
+    private void calculate(int[] rates) {
+        int joined = 0;
+        int totalSales = 0;
+        
+        for(int[] user : users) {
+            int wantRate = user[0];
+            int affordable = user[1];
+            
+            int sales = 0;
+            for (int i = 0; i < emoticons.length; i++) {
+                if (wantRate > rates[i]) continue;
+                sales += emoticons[i] * (100 - rates[i]) / 100;
+            }
+            
+            if (sales >= affordable) {
+                joined++;
+            } else {
+                totalSales += sales;
+            }
+        }
+        if (bestJoin < joined || (bestJoin == joined && totalSales > bestSales)) {
+            bestJoin = joined;
+            bestSales = totalSales;
         }
     }
 }
