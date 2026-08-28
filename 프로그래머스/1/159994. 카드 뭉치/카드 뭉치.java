@@ -1,14 +1,34 @@
+import java.util.*;
+
 class Solution {
     public String solution(String[] cards1, String[] cards2, String[] goal) {
+        Deque<String> q1 = new ArrayDeque<>();
+        Deque<String> q2 = new ArrayDeque<>();
         
-        for (int i = 0, idx1 = 0, idx2 = 0; i < goal.length; i++) {
-            if (idx1 < cards1.length && cards1[idx1].equals(goal[i])) {
-                idx1++;
-            } else if (idx2 < cards2.length && cards2[idx2].equals(goal[i])){
-                idx2++;
+        for (int i = 0; i < cards1.length; i++) {
+            q1.offer(cards1[i]);
+        }
+        for (int i = 0; i < cards2.length; i++) {
+            q2.offer(cards2[i]);
+        }
+        
+        int idx = 0;
+        while (idx < goal.length) {
+            String want = goal[idx];
+            
+            if (!q1.isEmpty() && want.equals(q1.peek())) {
+                q1.poll();
+                idx++;
+            } else if (!q2.isEmpty() && want.equals(q2.peek())) {
+                q2.poll();
+                idx++;
             } else {
-                return "No";
+                break;
             }
+        }
+
+        if (idx < goal.length) {
+            return "No";
         }
         
         return "Yes";
