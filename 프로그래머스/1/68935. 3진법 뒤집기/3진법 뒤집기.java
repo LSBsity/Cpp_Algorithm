@@ -1,14 +1,20 @@
+import java.util.*;
+
 class Solution {
     public int solution(int n) {
-        StringBuilder sb = new StringBuilder();
+        int answer = 0;
         
-        while (n > 0) {
-            sb.append(n % 3);
-            n /= 3;
+        String str = Integer.toString(n, 3);
+        
+        int p = 0;
+        for (char c : str.toCharArray()) {
+            if (c == '0') { p++; continue; }
+            
+            answer += (c - '0') * (int) Math.pow(3, p);
+            p++;
         }
-
-        return Integer.parseInt(sb.toString(), 3);
+        
+        
+        return answer;
     }
 }
-
- 
