@@ -1,10 +1,10 @@
 # [level 0] 나이 출력 - 120820 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120820?language=java) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120820) 
 
 ### 성능 요약
 
-메모리: 71.9 MB, 시간: 0.04 ms
+메모리: 75.4 MB, 시간: 0.02 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 10월 08일 18:59:39
+2026년 09월 03일 14:21:30
 
 ### 문제 설명
 
