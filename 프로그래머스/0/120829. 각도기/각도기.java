@@ -1,13 +1,10 @@
 class Solution {
-    public int solution(int i) {
-        return switch (i) {
-            case 90 -> 2;
-            case 180 -> 4;
-            default -> {
-                if (i > 0 && i < 90) yield 1;
-                else if (i > 90 && i < 180) yield 3;
-                else yield -1;
-            }
-        };
+    public int solution(int angle) {
+        if (angle == 180) return 4;
+        if (angle > 90) return 3;
+        if (angle == 90) return 2;
+        if (angle < 90) return 1;
+        
+        return -1;
     }
 }
