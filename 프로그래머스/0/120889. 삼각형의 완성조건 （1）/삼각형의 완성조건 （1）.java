@@ -1,9 +1,8 @@
-import java.util.Arrays;
-
+import java.util.*;
 
 class Solution {
-    public int solution(int[] sides) {
-            Arrays.sort(sides);
-            return sides[2] >= sides[0] + sides[1] ? 2 : 1;
+    public int solution(int[] s) {
+        Arrays.sort(s);
+        return s[2] < s[0] + s[1] ? 1 : 2;
     }
 }
