@@ -1,8 +1,9 @@
-import java.util.Arrays;
-
-
 class Solution {
-    public double solution(int[] arr) {
-        return (double)Arrays.stream(arr).sum() / arr.length;
+    public double solution(int[] numbers) {
+        double answer = 0;
+        
+        for (int number : numbers) answer += number;
+        
+        return answer / numbers.length;
     }
 }
