@@ -1,9 +1,12 @@
-import java.util.stream.IntStream;
-
 class Solution {
     public int solution(int n) {
-        IntStream stream = IntStream.rangeClosed(0, n);
-        return n % 2 == 1 ? stream.filter(i -> i % 2 == 1).sum() :
-                stream.filter(i -> i % 2 == 0).map(i -> i * i).sum();
+        int answer = 0;
+
+        int rem = n % 2;
+        for (int i = 0; i <= n; i++) {
+            if (i % 2 == rem) answer += rem == 0 ? i * i : i;
+        }
+        
+        return answer;
     }
 }
