@@ -1,10 +1,12 @@
 class Solution {
     public int solution(int[] dot) {
-        int x = dot[0], y = dot[1];
-        if (x >= 0) {
-            return y >= 0 ? 1 : 4;
-        } else {
-            return y >= 0 ? 2 : 3;
-        }
+        int a = dot[0];
+        int b = dot[1];
+        
+        if (a > 0 && b > 0) return 1;
+        if (a < 0 && b > 0) return 2;
+        if (a < 0 && b < 0) return 3;
+        
+        return 4;
     }
 }
