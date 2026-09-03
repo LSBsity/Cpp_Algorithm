@@ -1,12 +1,15 @@
-import java.util.stream.Collectors;
-import static java.lang.Character.*;
-
 class Solution {
-    public String solution(String str) {
-        return str.chars()
-                .mapToObj(c -> (char) c)
-                .map(c -> isUpperCase(c) ? toLowerCase(c) : toUpperCase(c))
-                .map(String::valueOf)
-                .collect(Collectors.joining());
+    public String solution(String my_string) {
+        StringBuilder answer = new StringBuilder();
+        
+        for (char c : my_string.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                answer.append(Character.toLowerCase(c));
+            } else {
+                answer.append(Character.toUpperCase(c));
+            }
+        }
+        
+        return answer.toString();
     }
 }
