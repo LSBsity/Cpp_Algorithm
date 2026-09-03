@@ -1,5 +1,8 @@
 class Solution {
     public int solution(int n, int k) {
-        return 12_000 * n + 2_000 * k - n / 10 * 2_000;
+        int service = n / 10;
+        int shouldPay = k - service;
+        
+        return (n * 12000) + (shouldPay * 2000);
     }
 }
