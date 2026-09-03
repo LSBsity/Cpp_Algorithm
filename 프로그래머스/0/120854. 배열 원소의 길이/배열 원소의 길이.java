@@ -1,9 +1,12 @@
-import java.util.Arrays;
-
 class Solution {
     public int[] solution(String[] strlist) {
-        return Arrays.stream(strlist)
-            .mapToInt(i -> i.length())
-            .toArray();
+        int[] answer = new int[strlist.length];
+        
+        int idx = 0;
+        for (String str : strlist) {
+            answer[idx++] = str.length();
+        }
+        
+        return answer;
     }
 }
