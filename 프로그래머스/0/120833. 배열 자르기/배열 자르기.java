@@ -1,7 +1,10 @@
-import java.util.Arrays;
-
 class Solution {
     public int[] solution(int[] numbers, int num1, int num2) {
-        return Arrays.copyOfRange(numbers, num1, num2 + 1);
+        int len = num2 - num1 + 1;
+        
+        int[] answer = new int[len];
+        System.arraycopy(numbers, num1, answer, 0, len);
+                         
+        return answer;
     }
 }
