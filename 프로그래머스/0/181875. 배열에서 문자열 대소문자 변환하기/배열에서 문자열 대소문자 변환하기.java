@@ -1,11 +1,14 @@
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
-
 class Solution {
-    public String[] solution(String[] arr) {
-        AtomicInteger i = new AtomicInteger(0);
-        return Arrays.stream(arr)
-                .map(s -> i.getAndIncrement() % 2 == 0 ? s.toLowerCase() : s.toUpperCase())
-                .toArray(String[]::new);
+    public String[] solution(String[] strArr) {
+
+        for (int i = 0; i < strArr.length; i++) {
+            if (i % 2 == 0) {
+                strArr[i] = strArr[i].toLowerCase();
+            } else {
+                strArr[i] = strArr[i].toUpperCase();
+            }
+        }
+        
+        return strArr;
     }
 }
