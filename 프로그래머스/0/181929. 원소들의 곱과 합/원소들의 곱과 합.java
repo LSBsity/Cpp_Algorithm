@@ -1,10 +1,13 @@
-import java.util.Arrays;
-
 class Solution {
     public int solution(int[] num_list) {
-        int sum = Arrays.stream(num_list)
-                .sum();
-        return sum * sum > Arrays.stream(num_list)
-                .reduce(1, (left, right) -> left * right) ? 1 : 0;
+        int sum = 0;
+        int mult = 1;
+        
+        for (int num : num_list) {
+            sum += num;
+            mult *= num;
+        }
+        
+        return mult < sum * sum ? 1 : 0;
     }
 }
