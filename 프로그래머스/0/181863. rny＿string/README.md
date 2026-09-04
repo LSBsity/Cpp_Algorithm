@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 77.8 MB, 시간: 0.06 ms
+메모리: 72.8 MB, 시간: 0.17 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 10월 12일 12:29:55
+2026년 09월 04일 17:31:34
 
 ### 문제 설명
 
@@ -67,26 +67,76 @@
 <ul>
 <li>예제 1번의 <code>rny_string</code>의 'm'을 "rn"으로 바꾸는 과정을 표로 나타내면 다음과 같습니다.</li>
 </ul>
-
-<p>|rny_string|m|a|s|t|e|r|p|i|e|c|e|</p>
-
-<p>|---------|-|-|-|-|-|-|-|-|-|-|-|</p>
-
-<p>|result|rn|a|s|t|e|r|p|i|e|c|e|</p>
-<div class="highlight"><pre class="codehilite"><code>따라서 "rnasterpiece"를 return 합니다.
+<table class="table">
+        <thead><tr>
+<th>rny_string</th>
+<th>m</th>
+<th>a</th>
+<th>s</th>
+<th>t</th>
+<th>e</th>
+<th>r</th>
+<th>p</th>
+<th>i</th>
+<th>e</th>
+<th>c</th>
+<th>e</th>
+</tr>
+</thead>
+        <tbody><tr>
+<td>result</td>
+<td>rn</td>
+<td>a</td>
+<td>s</td>
+<td>t</td>
+<td>e</td>
+<td>r</td>
+<td>p</td>
+<td>i</td>
+<td>e</td>
+<td>c</td>
+<td>e</td>
+</tr>
+</tbody>
+      </table><div class="highlight"><pre class="codehilite"><code>따라서 "rnasterpiece"를 return 합니다.
 </code></pre></div>
 <p>입출력 예 #2</p>
 
 <ul>
 <li>예제 2번의 <code>rny_string</code>의 'm'을 "rn"으로 바꾸는 과정을 표로 나타내면 다음과 같습니다.</li>
 </ul>
-
-<p>|rny_string|p|r|o|g|r|a|m|m|e|r|s|</p>
-
-<p>|---------|-|-|-|-|-|-|-|-|-|-|-|</p>
-
-<p>|result|p|r|o|g|r|a|rn|rn|e|r|s|</p>
-<div class="highlight"><pre class="codehilite"><code>따라서 "prograrnrners"를 return 합니다.
+<table class="table">
+        <thead><tr>
+<th>rny_string</th>
+<th>p</th>
+<th>r</th>
+<th>o</th>
+<th>g</th>
+<th>r</th>
+<th>a</th>
+<th>m</th>
+<th>m</th>
+<th>e</th>
+<th>r</th>
+<th>s</th>
+</tr>
+</thead>
+        <tbody><tr>
+<td>result</td>
+<td>p</td>
+<td>r</td>
+<td>o</td>
+<td>g</td>
+<td>r</td>
+<td>a</td>
+<td>rn</td>
+<td>rn</td>
+<td>e</td>
+<td>r</td>
+<td>s</td>
+</tr>
+</tbody>
+      </table><div class="highlight"><pre class="codehilite"><code>따라서 "prograrnrners"를 return 합니다.
 </code></pre></div>
 <p>입출력 예 #3</p>
 
