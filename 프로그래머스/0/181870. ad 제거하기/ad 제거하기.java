@@ -1,9 +1,12 @@
-import java.util.Arrays;
+import java.util.*;
 
 class Solution {
     public String[] solution(String[] strArr) {
-        return Arrays.stream(strArr)
-                .filter(str -> !str.contains("ad"))
-                .toArray(String[]::new);
+        List<String> list = new ArrayList<>();
+        for (String str : strArr) {
+            if (!str.contains("ad")) list.add(str);
+        }
+        
+        return list.stream().toArray(String[]::new);
     }
 }
