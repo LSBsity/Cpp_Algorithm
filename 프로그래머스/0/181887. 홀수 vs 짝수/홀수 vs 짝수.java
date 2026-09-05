@@ -1,10 +1,16 @@
 class Solution {
-    public int solution(int[] arr) {
-        int even = 0, odd = 0;
-        for (int i = 1; i <= arr.length; i++) {
-            if (i % 2 == 1) odd += arr[i - 1];
-            else even += arr[i - 1];
+    public int solution(int[] num_list) {
+        int sumEven = 0;
+        int sumOdd = 0;
+        
+        for (int i = 0; i < num_list.length; i++) {
+            if (i % 2 == 0) {
+                sumEven += num_list[i];
+            } else {
+                sumOdd += num_list[i];
+            }
         }
-        return Math.max(even, odd);
+        
+        return Math.max(sumEven, sumOdd);
     }
 }
