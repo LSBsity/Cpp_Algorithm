@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 72.8 MB, 시간: 11.29 ms
+메모리: 78.8 MB, 시간: 5.49 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 11월 27일 09:13:43
+2026년 09월 05일 19:44:36
 
 ### 문제 설명
 
@@ -67,21 +67,46 @@
 <ul>
 <li>예제 1번의 <code>my_string</code>을 한 줄에 4 글자씩 쓰면 다음의 표와 같습니다.</li>
 </ul>
-
-<p>|1열|2열|3열|4열|</p>
-
-<p>|---|---|---|---|</p>
-
-<p>|i|h|r|h|</p>
-
-<p>|b|a|k|r|</p>
-
-<p>|f|p|n|d|</p>
-
-<p>|o|p|l|j|</p>
-
-<p>|h|y|g|c|</p>
-<div class="highlight"><pre class="codehilite"><code>2열에 적힌 글자를 세로로 읽으면 happy이므로 "happy"를 return 합니다.
+<table class="table">
+        <thead><tr>
+<th>1열</th>
+<th>2열</th>
+<th>3열</th>
+<th>4열</th>
+</tr>
+</thead>
+        <tbody><tr>
+<td>i</td>
+<td>h</td>
+<td>r</td>
+<td>h</td>
+</tr>
+<tr>
+<td>b</td>
+<td>a</td>
+<td>k</td>
+<td>r</td>
+</tr>
+<tr>
+<td>f</td>
+<td>p</td>
+<td>n</td>
+<td>d</td>
+</tr>
+<tr>
+<td>o</td>
+<td>p</td>
+<td>l</td>
+<td>j</td>
+</tr>
+<tr>
+<td>h</td>
+<td>y</td>
+<td>g</td>
+<td>c</td>
+</tr>
+</tbody>
+      </table><div class="highlight"><pre class="codehilite"><code>2열에 적힌 글자를 세로로 읽으면 happy이므로 "happy"를 return 합니다.
 </code></pre></div>
 <p>입출력 예 #2</p>
 
