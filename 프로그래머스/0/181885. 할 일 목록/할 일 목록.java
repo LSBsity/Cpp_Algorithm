@@ -1,10 +1,15 @@
-import java.util.stream.IntStream;
+import java.util.*;
 
 class Solution {
     public String[] solution(String[] todo_list, boolean[] finished) {
-        return IntStream.range(0, finished.length)
-                .filter(i -> finished[i] == false)
-                .mapToObj(i -> todo_list[i])
-                .toArray(String[]::new);
+        List<String> list = new ArrayList<>();
+        
+        for (int i = 0; i < todo_list.length; i++) {
+            if (!finished[i]) {
+                list.add(todo_list[i]);
+            }   
+        }
+        
+        return list.stream().toArray(String[]::new);
     }
 }
