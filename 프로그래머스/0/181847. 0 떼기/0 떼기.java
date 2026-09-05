@@ -1,7 +1,14 @@
 class Solution {
     public String solution(String n_str) {
-        for (int i = 0; i < n_str.length(); i++)
-            if (n_str.charAt(i) != '0') return n_str.substring(i);
-        return n_str;
+        StringBuilder sb = new StringBuilder();
+        
+        boolean flag = false;
+        for (char c : n_str.toCharArray()) {
+            if (c != '0') flag = true;
+            
+            if (flag) sb.append(c);
+        }
+        
+        return sb.toString();
     }
 }
