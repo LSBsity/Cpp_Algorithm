@@ -1,10 +1,14 @@
+import java.util.*;
 class Solution {
     public int[] solution(long n) {
-        String str2 = new StringBuffer(String.valueOf(n))
-            .reverse()
-            .toString();
-        return str2.chars()
-                .map(i -> i - '0')
-                .toArray();
+        List<Integer> list = new ArrayList<>();
+
+        while (n >= 1) {
+            int rem = (int)(n % 10L);
+            n /= 10L;
+            list.add(rem);
+        }
+        
+        return list.stream().mapToInt(i -> i).toArray();
     }
 }
