@@ -1,19 +1,24 @@
-import java.util.Arrays;
-
 class Solution {
-    private int go(int value) {
+    public int solution(int[] num_list) {
+        int answer = 0;
+        
+        for (int i = 0; i < num_list.length; i++) {
+            answer += go(num_list[i]);
+        }
+        
+        return answer;
+    }
+    
+    private int go(int n) {
         int count = 0;
-        while (value != 1) {
-            if (value % 2 == 0) value /= 2;
-            else value = (value - 1) / 2;
+        while (n != 1) {
+            if (n % 2 == 0) {
+                n /= 2;  
+            } else {
+                n = (n - 1) / 2;
+            }
             count++;
         }
         return count;
-    }
-
-    public int solution(int[] num_list) {
-        return Arrays.stream(num_list)
-                .map(this::go)
-                .sum();
     }
 }
