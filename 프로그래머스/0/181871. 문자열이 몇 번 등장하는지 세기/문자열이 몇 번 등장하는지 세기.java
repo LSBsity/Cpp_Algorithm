@@ -1,9 +1,13 @@
-import java.util.stream.IntStream;
-
 class Solution {
     public int solution(String myString, String pat) {
-        return (int) IntStream.range(0, myString.length() - pat.length() + 1)
-                .filter(i -> myString.startsWith(pat, i))
-                .count();
+        int answer = 0;
+        
+        for (int i = 0; i <= myString.length() - pat.length(); i++) {
+            if (myString.substring(i).startsWith(pat)) {
+                answer++;
+            }
+        }
+        
+        return answer;
     }
 }
