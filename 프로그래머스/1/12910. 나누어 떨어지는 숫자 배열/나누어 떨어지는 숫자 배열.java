@@ -1,11 +1,16 @@
-import java.util.Arrays;
+import java.util.*;
 
 class Solution {
-    public int[] solution(int[] arr, int divisor) {
-        int[] array = Arrays.stream(arr)
-                .filter(i -> i % divisor == 0)
-                .sorted()
-                .toArray();
-        return array.length == 0 ? new int[]{-1} : array;
+    public int[] solution(int[] arr, int div) {
+        List<Integer> list = new ArrayList<>();
+        
+        for (int i : arr) {
+            if (i % div == 0) {
+                list.add(i);
+            }
+        }
+        
+        if (list.isEmpty()) return new int[] {-1};
+        return list.stream().mapToInt(i -> i).sorted().toArray();
     }
 }
