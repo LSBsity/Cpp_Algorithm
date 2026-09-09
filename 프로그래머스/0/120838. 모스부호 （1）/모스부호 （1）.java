@@ -1,45 +1,41 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
+import static java.util.Map.entry;
 
 class Solution {
-
-    private final Map<String, String> morse;
-
-    public Solution() {
-        morse = new HashMap<>();
-        morse.put(".-", "a");
-        morse.put("-...", "b");
-        morse.put("-.-.", "c");
-        morse.put("-..", "d");
-        morse.put(".", "e");
-        morse.put("..-.", "f");
-        morse.put("--.", "g");
-        morse.put("....", "h");
-        morse.put("..", "i");
-        morse.put(".---", "j");
-        morse.put("-.-", "k");
-        morse.put(".-..", "l");
-        morse.put("--", "m");
-        morse.put("-.", "n");
-        morse.put("---", "o");
-        morse.put(".--.", "p");
-        morse.put("--.-", "q");
-        morse.put(".-.", "r");
-        morse.put("...", "s");
-        morse.put("-", "t");
-        morse.put("..-", "u");
-        morse.put("...-", "v");
-        morse.put(".--", "w");
-        morse.put("-..-", "x");
-        morse.put("-.--", "y");
-        morse.put("--..", "z");
-    }
+    static Map<String, Character> map = Map.ofEntries(
+        entry(".-", 'a'),
+        entry("-...", 'b'),
+        entry("-.-.", 'c'),
+        entry("-..", 'd'),
+        entry(".", 'e'),
+        entry("..-.", 'f'),
+        entry("--.", 'g'),
+        entry("....", 'h'),
+        entry("..", 'i'),
+        entry(".---", 'j'),
+        entry("-.-", 'k'),
+        entry(".-..", 'l'),
+        entry("--", 'm'),
+        entry("-.", 'n'),
+        entry("---", 'o'),
+        entry(".--.", 'p'),
+        entry("--.-", 'q'),
+        entry(".-.", 'r'),
+        entry("...", 's'),
+        entry("-", 't'),
+        entry("..-", 'u'),
+        entry("...-", 'v'),
+        entry(".--", 'w'),
+        entry("-..-", 'x'),
+        entry("-.--", 'y'),
+        entry("--..", 'z')
+    );
 
     public String solution(String letter) {
-        return Arrays.stream(letter.split(" "))
-                .map(morse::get)
-                .collect(Collectors.joining());
+        StringBuilder sb = new StringBuilder();
+        for (String str : letter.split(" ")) {
+            sb.append(map.get(str));
+        }
+        return sb.toString();
     }
 }
