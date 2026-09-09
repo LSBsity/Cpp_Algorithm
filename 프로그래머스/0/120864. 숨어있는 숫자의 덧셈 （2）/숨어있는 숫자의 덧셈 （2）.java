@@ -1,20 +1,25 @@
 class Solution {
     public int solution(String my_string) {
         int answer = 0;
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < my_string.length(); i++) {
-            char c = my_string.charAt(i);
-            if (Character.isDigit(c)) {
-                sb.append(c);
-            } else {
-                sb.append(" ");
+        
+        char[] chars = my_string.toCharArray();
+        int idx = chars.length - 1;
+        
+        while (idx >= 0) {
+            int sum = 0;
+            int d = 1;
+            
+            while (idx >= 0 && Character.isDigit(chars[idx])) {
+                int digit = chars[idx] - '0';
+                sum += digit * d;
+                d *= 10;
+                idx--;
             }
+            
+            answer += sum;
+            idx--;
         }
-        for (String value : sb.toString().split(" ")) {
-            try {
-                answer += Integer.parseInt(value);    
-            } catch(Exception ignore) {}   
-        }
+        
         return answer;
     }
 }
