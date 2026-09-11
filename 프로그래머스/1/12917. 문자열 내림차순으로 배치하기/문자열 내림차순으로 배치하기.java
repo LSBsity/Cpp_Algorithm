@@ -1,12 +1,9 @@
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.stream.Collectors;
+import java.util.*;
 
 class Solution {
     public String solution(String s) {
-        return Arrays.stream(s.split(""))
-                .sorted(Comparator.reverseOrder())
-                .map(String::valueOf)
-                .collect(Collectors.joining());
+        char[] chars = s.toCharArray();
+        Arrays.sort(chars);
+        return new StringBuilder(new String(chars)).reverse().toString();
     }
 }
