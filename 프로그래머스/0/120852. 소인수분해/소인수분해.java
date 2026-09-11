@@ -1,27 +1,19 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 class Solution {
-
     public int[] solution(int n) {
-        return getValues(n).stream()
-                .mapToInt(i -> i)
-                .distinct()
-                .toArray();
-    }
-
-    private static List<Integer> getValues(int n) {
-        List<Integer> arr = new ArrayList<>();
-        int i = 2;
-        while (i <= n) {
-            if (n % i == 0) {
-                arr.add(i);
-                n /= i;
-            } else {
-                i++;
+        List<Integer> list = new ArrayList<>();
+        
+        int val = 2;
+        while (val <= n) {
+            while (n % val == 0) {
+                list.add(val);
+                n /= val;
             }
+            val++;
         }
-        return arr;
+        
+        return list.isEmpty() ?
+            new int[] {n} : list.stream().distinct().mapToInt(Integer::intValue).toArray();
     }
 }
