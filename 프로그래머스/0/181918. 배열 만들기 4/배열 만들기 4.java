@@ -1,23 +1,27 @@
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Deque;
+import java.util.*;
 
 class Solution {
-
     public int[] solution(int[] arr) {
-        Deque<Integer> stk = new ArrayDeque<>();
+        Deque<Integer> dq = new ArrayDeque<>();
         int i = 0;
+        
         while (i < arr.length) {
-            if (stk.isEmpty()) {
-                stk.addFirst(arr[i]);
-            } else if (stk.peekLast() < arr[i]) {
-                stk.addLast(arr[i]);
-            } else if (stk.peekLast() >= arr[i]) {
-                stk.removeLast();
-                continue;
+            if (dq.isEmpty()) {
+                dq.offerFirst(arr[i]);
+                i++;
+            } else if (dq.peekLast() < arr[i]) {
+                dq.offerLast(arr[i]);
+                i++;
+            } else if (dq.peekLast() >= arr[i]) {
+                dq.pollLast();
             }
-            i++;
         }
-        return stk.stream().mapToInt(val -> val).toArray();
+        int[] answer = new int[dq.size()];
+        int idx = 0;
+        while (!dq.isEmpty()) {
+            answer[idx++] = dq.pollFirst();
+        }
+        
+        return answer;
     }
 }
