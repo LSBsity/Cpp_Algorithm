@@ -1,15 +1,25 @@
 class Solution {
-
     public int solution(int n) {
-        int[] values = new int[101];
-
-        for (int i = 1, val = 1; i <= 100; i++) {
-            while (String.valueOf(val).contains("3") || val % 3 == 0) {
-                val++;
+        int d3 = 1;
+        int d10 = 1;
+        
+        while (d10 < n) {
+            d3++;
+            while (d3 % 3 == 0 || contains(d3)) {
+                d3++;
             }
-            values[i] = val++;
+            d10++;
         }
-
-        return values[n];
+        
+        return d3;
+    }
+    
+    private boolean contains(int num) {
+        while (num >= 1) {
+            int val = num % 10;
+            if (val == 3) return true;
+            num /= 10;
+        }
+        return false;
     }
 }
