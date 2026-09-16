@@ -1,19 +1,18 @@
-import java.util.Arrays;
+import java.util.*;
 
 class Solution {
-
     public int[] solution(int[] arr, int[] query) {
-        int start = 0;
-        int end = arr.length;
-
+        int[] answer = arr.clone();
+        
         for (int i = 0; i < query.length; i++) {
-            if (i % 2 != 0) {
-                start += query[i];
+            int idx = query[i];
+            if (i % 2 == 0) {
+                answer = Arrays.copyOfRange(answer, 0, idx + 1);
             } else {
-                end = start + query[i];
+                answer = Arrays.copyOfRange(answer, idx, answer.length);
             }
         }
         
-        return Arrays.copyOfRange(arr, start, end + 1);
+        return answer;
     }
 }
