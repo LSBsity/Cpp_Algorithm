@@ -1,37 +1,41 @@
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 class Solution {
     public int solution(int a, int b, int c, int d) {
-        List<Integer> list = Arrays.asList(a, b, c, d);
-        list.sort(Comparator.naturalOrder());
+        if (a == b && b == c && c == d) return 1111 * a;
 
-        a = list.get(0);
-        b = list.get(1);
-        c = list.get(2);
-        d = list.get(3);
-
-        if ((a == b) && (b == c) && (c == d)) {
-            return a * 1111;
+        int[] arr = new int[] {a, b, c, d};
+        Arrays.sort(arr);
+        
+        if (arr[0] != arr[1] && arr[1] != arr[2] && arr[2] != arr[3]) return arr[0];
+        if (arr[0] == arr[1] && arr[1] == arr[2]) {
+            return (int) Math.pow(10 * arr[0] + arr[3], 2);
+        } else if (arr[1] == arr[2] && arr[2] == arr[3]) {
+            return (int) Math.pow(10 * arr[3] + arr[0], 2);
         }
-
-        if ((a == b && b == c)) {
-            return (int) Math.pow((10 * a + d), 2);
-        } else if ((b == c && c == d)) {
-            return (int) Math.pow((10 * d + a), 2);
+        
+        if (arr[0] == arr[1] && arr[1] != arr[2] && arr[2] != arr[3]) {
+            int q = arr[2];
+            int r = arr[3];
+            return q * r;
+        } else if (arr[1] == arr[2] && arr[2] != arr[3] && arr[0] != arr[3]) {
+            int q = arr[0];
+            int r = arr[3];
+            return q * r;
+        } else if (arr[2] == arr[3] && arr[1] != arr[2] && arr[0] != arr[1]) {
+            int q = arr[0];
+            int r = arr[1];
+            return q * r;
         }
-
-        if (a == b && c == d) {
-            return (a + c) * Math.abs(a - c);
-        } else if (a == b) {
-            return c * d;
-        } else if (b == c) {
-            return a * d;
-        } else if (c == d) {
-            return a * b;
+        
+        if (arr[0] == arr[1] && arr[2] == arr[3]) {
+            return (arr[0] + arr[2]) * Math.abs(arr[0] - arr[2]);
+        } else if (arr[1] == arr[2] && arr[0] == arr[3]) {
+            return (arr[1] + arr[0]) * Math.abs(arr[1] - arr[0]);
+        } else if (arr[2] == arr[3] && arr[0] == arr[1]) {
+            return (arr[2] + arr[0]) * Math.abs(arr[2] - arr[0]);
         }
-
-        return a;
+        
+        return -1;
     }
 }
