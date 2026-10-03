@@ -1,36 +1,36 @@
 import java.util.*;
 
 class Solution {
+    
+    static final int DONE = 0;
+    static final int LOST = 1;
+    static final int RESERVE = 2;
+    
     public int solution(int n, int[] lost, int[] reserve) {
-        int saved = n - lost.length;
-        boolean[] v = new boolean[31];
+        int answer = 0;
+        int[] arr = new int[31];
         
-        Arrays.sort(reserve);
-        Arrays.sort(lost);
+        for (int i = 0; i < lost.length; i++) {
+            arr[lost[i]] = LOST;            
+        }
+        for (int i = 0; i < reserve.length; i++) {
+            if (arr[reserve[i]] == LOST) arr[reserve[i]] = DONE;
+            else arr[reserve[i]] = RESERVE;
+        }
         
-        for (var i : reserve) {
-            for (var j : lost) {
-                if (i == j) {
-                    v[i] = true;
-                    saved++;
-                    break;
-                }
+        for (int i = 1; i <= n; i++) {
+            if (arr[i] == RESERVE) {
+                if (arr[i - 1] == 1) arr[i - 1] = DONE;
+                else if (arr[i + 1] == 1) arr[i + 1] = DONE;
+                
+                arr[i] = 0;
             }
         }
         
-        for (var i : reserve) {
-            if (v[i]) {
-                continue;
-            }
-            for (var j : lost) {
-                if (!v[j] && Math.abs(j - i) == 1) {
-                    v[j] = true;
-                    saved++;
-                    break;
-                }
-            }
+        for (int i = 1; i <= n; i++) {
+            if (arr[i] == DONE || arr[i] == RESERVE) answer++;
         }
         
-        return saved;
+        return answer;
     }
 }
